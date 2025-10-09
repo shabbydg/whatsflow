@@ -1,0 +1,13 @@
+{
+  "watch": ["src"],
+  "ext": "ts,js,json",
+  "ignore": [
+    "whatsapp-sessions/**",
+    "logs/**",
+    "uploads/**",
+    "node_modules/**",
+    "dist/**",
+    ".git/**"
+  ],
+  "exec": "tsx src/app.ts"
+}

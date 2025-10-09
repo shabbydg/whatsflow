@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(lsof:*)",
+      "Read(//private/tmp/**)",
+      "Bash(pkill:*)",
+      "Bash(/dev/null pkill -f \"nodemon\" 2)",
+      "Bash(/dev/null lsof -ti:5000)",
+      "Bash(xargs kill:*)",
+      "Bash(/dev/null sleep 3 echo \"Processes killed, port should be free now\" lsof -ti:5000)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm install:*)",
+      "Bash(awk:*)",
+      "Bash(mysql:*)",
+      "Bash(npm run dev:*)",
+      "WebSearch",
+      "Bash(for:*)",
+      "Bash(do echo \"=== $file ===\" grep \"from ''''\\.\\.\" \"$file\")",
+      "Bash(node:*)",
+      "Bash(source:*)",
+      "Bash(nvm list:*)",
+      "Bash(nvm use:*)",
+      "Bash(nvm alias:*)",
+      "Bash(PORT=2152 tsx src/app.ts)",
+      "Bash(PORT=2152 npx tsx src/app.ts)",
+      "Bash(mkdir:*)",
+      "Bash(chmod:*)",
+      "Bash(./run-migration.sh:*)",
+      "Bash(grep:*)",
+      "Bash(kill:*)",
+      "Bash(ls:*)",
+      "Bash(brew services:*)",
+      "Bash(mysql.server:*)",
+      "Bash(sudo /Applications/XAMPP/xamppfiles/bin/mysql.server:*)",
+      "Bash(PORT=2152 npm run dev)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
