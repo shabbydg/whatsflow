@@ -270,7 +270,7 @@ export default function BroadcastDetailsPage() {
           <select
             value={recipientStatusFilter}
             onChange={(e) => setRecipientStatusFilter(e.target.value)}
-            className="px-3 py-1 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            className="px-3 py-1 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900"
           >
             <option value="all">All Status</option>
             <option value="pending">Pending</option>

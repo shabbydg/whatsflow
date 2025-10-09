@@ -233,7 +233,7 @@ export default function ContactListsPage() {
       {showCreateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Create Contact List</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-900">Create Contact List</h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -243,7 +243,7 @@ export default function ContactListsPage() {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                   placeholder="e.g., VIP Customers"
                 />
               </div>
@@ -254,7 +254,7 @@ export default function ContactListsPage() {
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                   rows={3}
                   placeholder="Optional description"
                 />
@@ -263,7 +263,7 @@ export default function ContactListsPage() {
             <div className="flex gap-2 mt-6">
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                className="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
               >
                 Cancel
               </button>
@@ -283,7 +283,7 @@ export default function ContactListsPage() {
       {showEditModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Edit Contact List</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-900">Edit Contact List</h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -293,7 +293,7 @@ export default function ContactListsPage() {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                 />
               </div>
               <div>
@@ -303,7 +303,7 @@ export default function ContactListsPage() {
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                   rows={3}
                 />
               </div>
@@ -311,7 +311,7 @@ export default function ContactListsPage() {
             <div className="flex gap-2 mt-6">
               <button
                 onClick={() => setShowEditModal(false)}
-                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                className="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
               >
                 Cancel
               </button>
@@ -331,13 +331,13 @@ export default function ContactListsPage() {
       {showMembersModal && selectedList && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[80vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">
+            <h2 className="text-xl font-bold mb-4 text-gray-900">
               {selectedList.name} - Contacts ({membersTotal})
             </h2>
 
             {/* Add Member Form */}
             <div className="bg-gray-50 p-4 rounded-lg mb-4">
-              <h3 className="font-medium mb-3">Add Contact</h3>
+              <h3 className="font-medium mb-3 text-gray-900">Add Contact</h3>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -345,7 +345,7 @@ export default function ContactListsPage() {
                   onChange={(e) =>
                     setMemberFormData({ ...memberFormData, phone_number: e.target.value })
                   }
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                   placeholder="Phone number (e.g., +94771234567)"
                 />
                 <input
@@ -354,7 +354,7 @@ export default function ContactListsPage() {
                   onChange={(e) =>
                     setMemberFormData({ ...memberFormData, full_name: e.target.value })
                   }
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                   placeholder="Full name (optional)"
                 />
                 <button
@@ -378,7 +378,7 @@ export default function ContactListsPage() {
                     <p className="font-medium text-gray-900">
                       {member.full_name || 'Unnamed Contact'}
                     </p>
-                    <p className="text-sm text-gray-600">{member.phone_number}</p>
+                    <p className="text-gray-600">{member.phone_number}</p>
                     {member.opted_out && (
                       <span className="text-xs text-red-600 mt-1 inline-block">Opted Out</span>
                     )}
@@ -400,7 +400,7 @@ export default function ContactListsPage() {
             <div className="flex justify-end mt-6">
               <button
                 onClick={() => setShowMembersModal(false)}
-                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
               >
                 Close
               </button>
@@ -413,7 +413,7 @@ export default function ContactListsPage() {
       {showImportModal && selectedList && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Import Contacts from CSV</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-900">Import Contacts from CSV</h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -423,7 +423,7 @@ export default function ContactListsPage() {
                   type="file"
                   accept=".csv"
                   onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                 />
                 <p className="text-xs text-gray-500 mt-2">
                   CSV should have columns: phone, name (optional), and any custom fields
@@ -436,7 +436,7 @@ export default function ContactListsPage() {
                   setShowImportModal(false);
                   setCsvFile(null);
                 }}
-                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                className="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
               >
                 Cancel
               </button>

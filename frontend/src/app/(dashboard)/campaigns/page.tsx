@@ -319,7 +319,7 @@ export default function CampaignsPage() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-lg mb-2">Rate Limiting</h3>
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Rate Limiting</h3>
                 <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
                   <li>Slow: 30 seconds between messages (120 messages/hour)</li>
                   <li>Normal: 20 seconds between messages (180 messages/hour)</li>
@@ -329,7 +329,7 @@ export default function CampaignsPage() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-lg mb-2">Content Guidelines</h3>
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Content Guidelines</h3>
                 <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
                   <li>Only message contacts who have opted in</li>
                   <li>Do not send spam or unsolicited messages</li>
@@ -340,7 +340,7 @@ export default function CampaignsPage() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-lg mb-2">Best Practices</h3>
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">Best Practices</h3>
                 <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
                   <li>Test your message with a small group first</li>
                   <li>Personalize messages when possible</li>
@@ -376,7 +376,7 @@ export default function CampaignsPage() {
             <div className="flex gap-2">
               <button
                 onClick={() => setShowGuidelinesModal(false)}
-                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                className="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
               >
                 Cancel
               </button>

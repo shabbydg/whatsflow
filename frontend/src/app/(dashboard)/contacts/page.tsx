@@ -128,7 +128,7 @@ export default function ContactsPage() {
               placeholder="Search contacts..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
             />
           </div>
         </div>
@@ -260,7 +260,7 @@ export default function ContactsPage() {
                   onChange={(e) => setNewContactPhone(e.target.value)}
                   placeholder="+1234567890"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                 />
                 <p className="text-sm text-gray-500 mt-1">Include country code</p>
               </div>
@@ -273,7 +273,7 @@ export default function ContactsPage() {
                   value={newContactName}
                   onChange={(e) => setNewContactName(e.target.value)}
                   placeholder="Contact Name"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                 />
               </div>
               <div className="flex items-center space-x-3 pt-4">
@@ -286,7 +286,7 @@ export default function ContactsPage() {
                 <button
                   type="button"
                   onClick={() => setShowAddContact(false)}
-                  className="flex-1 px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                  className="flex-1 px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
                 >
                   Cancel
                 </button>

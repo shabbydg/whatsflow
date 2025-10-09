@@ -209,7 +209,7 @@ export default function CreateBroadcastPage() {
         {/* Step 1: Broadcast Details */}
         {step === 1 && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold mb-4">Broadcast Details</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-900">Broadcast Details</h2>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -219,7 +219,7 @@ export default function CreateBroadcastPage() {
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                 placeholder="e.g., Holiday Sale Announcement"
               />
             </div>
@@ -231,7 +231,7 @@ export default function CreateBroadcastPage() {
               <select
                 value={formData.device_id}
                 onChange={(e) => setFormData({ ...formData, device_id: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
               >
                 <option value="">Choose a device...</option>
                 {devices.map((device) => (
@@ -310,7 +310,7 @@ export default function CreateBroadcastPage() {
         {/* Step 2: Message Content */}
         {step === 2 && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold mb-4">Message Content</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-900">Message Content</h2>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -347,7 +347,7 @@ export default function CreateBroadcastPage() {
                   type="text"
                   value={formData.media_url}
                   onChange={(e) => setFormData({ ...formData, media_url: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                   placeholder="https://example.com/image.jpg"
                 />
               </div>
@@ -362,7 +362,7 @@ export default function CreateBroadcastPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, message_content: e.target.value })
                 }
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                 rows={8}
                 placeholder="Type your message here..."
               />
@@ -393,7 +393,7 @@ export default function CreateBroadcastPage() {
         {/* Step 3: Send Options */}
         {step === 3 && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold mb-4">Sending Options</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-900">Sending Options</h2>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -442,7 +442,7 @@ export default function CreateBroadcastPage() {
                   }
                   min={5}
                   max={120}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                 />
               </div>
             )}
@@ -491,7 +491,7 @@ export default function CreateBroadcastPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, scheduled_at: e.target.value })
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                       />
                     )}
                   </div>

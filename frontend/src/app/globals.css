@@ -25,5 +25,20 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Form inputs styling - removed global overrides */
-/* Text colors are now handled by component classes (text-gray-900, etc.) */
+/* Form inputs styling - ensure good contrast */
+input, textarea, select {
+  color: #111827; /* text-gray-900 */
+}
+
+input::placeholder, textarea::placeholder {
+  color: #6b7280; /* text-gray-500 */
+}
+
+/* Modal text contrast fixes */
+.modal-title {
+  color: #111827 !important; /* text-gray-900 */
+}
+
+.modal-text {
+  color: #374151 !important; /* text-gray-700 */
+}

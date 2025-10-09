@@ -318,7 +318,7 @@ function PersonaModal({
                 placeholder="e.g., Sales Expert, Support Specialist"
                 required
                 disabled={persona?.is_system}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -331,7 +331,7 @@ function PersonaModal({
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Brief description of this persona"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -345,7 +345,7 @@ function PersonaModal({
                 placeholder="System instructions for the AI. Define personality, tone, goals, and behavior..."
                 required
                 rows={8}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent font-mono text-sm text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent font-mono text-sm text-gray-900 placeholder-gray-500"
               />
               <p className="text-sm text-gray-500 mt-1">
                 Example: "You are a friendly sales expert. Help customers find the right products, answer questions about pricing and features, and guide them through the purchase process."
@@ -360,7 +360,7 @@ function PersonaModal({
                 <select
                   value={formData.ai_model}
                   onChange={(e) => setFormData({ ...formData, ai_model: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder:text-gray-400"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                 >
                   {aiModels.map((model) => (
                     <option key={model.value} value={model.value}>
@@ -377,7 +377,7 @@ function PersonaModal({
                 <select
                   value={formData.tone}
                   onChange={(e) => setFormData({ ...formData, tone: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder:text-gray-400"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                 >
                   <option value="professional">Professional</option>
                   <option value="friendly">Friendly</option>
@@ -394,7 +394,7 @@ function PersonaModal({
                 <select
                   value={formData.response_style}
                   onChange={(e) => setFormData({ ...formData, response_style: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder:text-gray-400"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
                 >
                   <option value="concise">Concise</option>
                   <option value="detailed">Detailed</option>

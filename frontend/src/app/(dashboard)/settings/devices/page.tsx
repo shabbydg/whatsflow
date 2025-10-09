@@ -391,7 +391,7 @@ function AddDeviceModal({
                 onChange={(e) => setFormData({ ...formData, device_name: e.target.value })}
                 placeholder="e.g., Sales Line, Support Hotline"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -405,7 +405,7 @@ function AddDeviceModal({
                 onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })}
                 placeholder="+1234567890"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
               />
               <p className="text-sm text-gray-500 mt-1">Include country code</p>
             </div>
@@ -417,7 +417,7 @@ function AddDeviceModal({
               <select
                 value={formData.persona_id}
                 onChange={(e) => setFormData({ ...formData, persona_id: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
               >
                 <option value="">No Persona</option>
                 {personas.map((persona) => (
@@ -505,7 +505,7 @@ function AddDeviceModal({
                 value={formData.working_days}
                 onChange={(e) => setFormData({ ...formData, working_days: e.target.value })}
                 placeholder="Mon,Tue,Wed,Thu,Fri"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
               />
               <p className="text-sm text-gray-500 mt-1">Comma-separated days</p>
             </div>
@@ -514,7 +514,7 @@ function AddDeviceModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                className="px-6 py-2 border border-gray-300 text-gray-800 rounded-lg hover:bg-gray-50"
               >
                 Cancel
               </button>
@@ -596,7 +596,7 @@ function EditDeviceModal({
                 type="text"
                 value={formData.device_name}
                 onChange={(e) => setFormData({ ...formData, device_name: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -607,7 +607,7 @@ function EditDeviceModal({
               <select
                 value={formData.persona_id}
                 onChange={(e) => setFormData({ ...formData, persona_id: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
               >
                 <option value="">No Persona</option>
                 {personas.map((persona) => (
@@ -721,7 +721,7 @@ function EditDeviceModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                className="px-6 py-2 border border-gray-300 text-gray-800 rounded-lg hover:bg-gray-50"
               >
                 Cancel
               </button>

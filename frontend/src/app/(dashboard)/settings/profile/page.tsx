@@ -181,7 +181,7 @@ function ProfileInfoTab({ profile, onUpdate }: { profile: BusinessProfile; onUpd
             <button
               onClick={handleCancel}
               disabled={saving}
-              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+              className="px-4 py-2 border border-gray-300 text-gray-800 rounded-lg hover:bg-gray-50 disabled:opacity-50"
             >
               Cancel
             </button>
@@ -241,7 +241,7 @@ function ProfileInfoTab({ profile, onUpdate }: { profile: BusinessProfile; onUpd
                 onChange={(e) => setFormData({ ...formData, business_name: e.target.value })}
                 disabled={!editing}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -253,7 +253,7 @@ function ProfileInfoTab({ profile, onUpdate }: { profile: BusinessProfile; onUpd
                 onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
                 disabled={!editing}
                 placeholder="e.g., Retail, Technology"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -265,7 +265,7 @@ function ProfileInfoTab({ profile, onUpdate }: { profile: BusinessProfile; onUpd
                 onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                 disabled={!editing}
                 placeholder="https://example.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -277,7 +277,7 @@ function ProfileInfoTab({ profile, onUpdate }: { profile: BusinessProfile; onUpd
                 onChange={(e) => setFormData({ ...formData, business_type: e.target.value })}
                 disabled={!editing}
                 placeholder="e.g., ecommerce, retail"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder-gray-500"
               />
             </div>
           </div>
@@ -307,7 +307,7 @@ function ProfileInfoTab({ profile, onUpdate }: { profile: BusinessProfile; onUpd
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 disabled={!editing}
                 placeholder="+94771234567"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -319,7 +319,7 @@ function ProfileInfoTab({ profile, onUpdate }: { profile: BusinessProfile; onUpd
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 disabled={!editing}
                 placeholder="contact@example.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder-gray-500"
               />
             </div>
           </div>
@@ -354,7 +354,7 @@ function ProfileInfoTab({ profile, onUpdate }: { profile: BusinessProfile; onUpd
                 }
                 disabled={!editing}
                 placeholder="https://facebook.com/yourpage"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -371,7 +371,7 @@ function ProfileInfoTab({ profile, onUpdate }: { profile: BusinessProfile; onUpd
                 }
                 disabled={!editing}
                 placeholder="https://instagram.com/yourpage"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -388,7 +388,7 @@ function ProfileInfoTab({ profile, onUpdate }: { profile: BusinessProfile; onUpd
                 }
                 disabled={!editing}
                 placeholder="https://twitter.com/yourpage"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -405,7 +405,7 @@ function ProfileInfoTab({ profile, onUpdate }: { profile: BusinessProfile; onUpd
                 }
                 disabled={!editing}
                 placeholder="https://linkedin.com/company/yourpage"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent disabled:bg-gray-100 text-gray-900 placeholder-gray-500"
               />
             </div>
           </div>

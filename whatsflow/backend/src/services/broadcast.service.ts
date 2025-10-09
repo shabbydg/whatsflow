@@ -215,7 +215,7 @@ export class BroadcastService {
     }
 
     // Generate recipients from contact lists
-    await this.generateRecipients(broadcastId, data.contact_list_ids, data.message_content);
+    await this.generateRecipients(broadcastId, data.contact_list_ids, data.message_content, businessProfileId);
 
     logger.info(`Broadcast created: ${broadcastId}`);
 
@@ -548,7 +548,8 @@ export class BroadcastService {
   private async generateRecipients(
     broadcastId: string,
     contactListIds: string[],
-    messageTemplate: string
+    messageTemplate: string,
+    businessProfileId: string
   ): Promise<void> {
     const uniqueContacts = new Map<string, any>();
 
@@ -556,7 +557,7 @@ export class BroadcastService {
     for (const listId of contactListIds) {
       const { members } = await contactListService.getListMembers(
         listId,
-        '', // We already verified access
+        businessProfileId,
         { limit: 10000, excludeOptedOut: true }
       );
 
