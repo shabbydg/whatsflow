@@ -22,6 +22,11 @@ import profileRoutes from './routes/profile.routes.js';
 import productsRoutes from './routes/products.routes.js';
 import contactListRoutes from './routes/contact-list.routes.js';
 import broadcastRoutes from './routes/broadcast.routes.js';
+import leadRoutes from './routes/lead.routes.js';
+import planRoutes from './routes/plan.routes.js';
+import subscriptionRoutes from './routes/subscription.routes.js';
+import billingRoutes from './routes/billing.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler.middleware.js';
@@ -98,6 +103,11 @@ app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/products', productsRoutes);
 app.use('/api/v1/contact-lists', contactListRoutes);
 app.use('/api/v1/broadcasts', broadcastRoutes);
+app.use('/api/v1/leads', leadRoutes);
+app.use('/api/v1/plans', planRoutes);
+app.use('/api/v1/subscription', subscriptionRoutes);
+app.use('/api/v1/billing', billingRoutes);
+app.use('/api/v1/admin', adminRoutes);
 
 // Root endpoint
 app.get('/', (req: Request, res: Response) => {

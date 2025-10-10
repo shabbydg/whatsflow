@@ -1,0 +1,25 @@
+{
+  "name": "whatsflow-monorepo",
+  "version": "1.0.0",
+  "description": "WhatsFlow - Complete WhatsApp Business Platform",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd whatsflow/backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:admin": "cd admin && npm run dev",
+    "dev:landing": "cd landing && npm run dev",
+    "dev:all": "concurrently -n \"backend,frontend,admin,landing\" -c \"blue,green,yellow,magenta\" \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:admin\" \"npm run dev:landing\"",
+    "install:all": "npm install && cd whatsflow/backend && npm install && cd ../../frontend && npm install && cd ../admin && npm install && cd ../landing && npm install",
+    "build:frontend": "cd frontend && npm run build",
+    "build:admin": "cd admin && npm run build",
+    "build:landing": "cd landing && npm run build",
+    "build:all": "npm run build:frontend && npm run build:admin && npm run build:landing"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/stores/authStore';
-import { MessageSquare, Users, Settings, BarChart3, LogOut, Menu, X, ChevronDown, ChevronRight, Smartphone, Brain, Globe, Megaphone } from 'lucide-react';
+import { MessageSquare, Users, Settings, BarChart3, LogOut, Menu, X, ChevronDown, ChevronRight, Smartphone, Brain, Globe, Megaphone, Target, CreditCard } from 'lucide-react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -34,14 +34,24 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
     { name: 'Messages', href: '/messages', icon: MessageSquare },
     { name: 'Contacts', href: '/contacts', icon: Users },
+    { name: 'Leads', href: '/leads', icon: Target },
     { name: 'Campaigns', href: '/campaigns', icon: Megaphone },
   ];
+
+  const [billingOpen, setBillingOpen] = useState(false);
 
   const settingsNavigation = [
     { name: 'General', href: '/settings', icon: Settings },
     { name: 'Devices', href: '/settings/devices', icon: Smartphone },
     { name: 'Personas', href: '/settings/personas', icon: Brain },
     { name: 'Business Profile', href: '/settings/profile', icon: Globe },
+  ];
+
+  const billingNavigation = [
+    { name: 'Overview', href: '/billing', icon: CreditCard },
+    { name: 'Plans', href: '/billing/plans', icon: BarChart3 },
+    { name: 'Invoices', href: '/billing/invoices', icon: Globe },
+    { name: 'Settings', href: '/billing/settings', icon: Settings },
   ];
 
   if (!mounted || !isAuthenticated()) {
@@ -93,6 +103,52 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </Link>
               );
             })}
+
+            {/* Billing Section with Submenu */}
+            <div className="space-y-1">
+              <button
+                onClick={() => setBillingOpen(!billingOpen)}
+                className={`flex items-center justify-between w-full px-4 py-3 rounded-lg transition-colors ${
+                  pathname.startsWith('/billing')
+                    ? 'bg-purple-50 text-purple-600'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center space-x-3">
+                  <CreditCard className="w-5 h-5" />
+                  <span className="font-medium">Billing</span>
+                </div>
+                {billingOpen ? (
+                  <ChevronDown className="w-4 h-4" />
+                ) : (
+                  <ChevronRight className="w-4 h-4" />
+                )}
+              </button>
+
+              {/* Billing Submenu */}
+              {billingOpen && (
+                <div className="ml-4 space-y-1 border-l-2 border-gray-200 pl-2">
+                  {billingNavigation.map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={`flex items-center space-x-3 px-4 py-2 rounded-lg transition-colors text-sm ${
+                          isActive
+                            ? 'bg-purple-50 text-purple-600'
+                            : 'text-gray-600 hover:bg-gray-50'
+                        }`}
+                        onClick={() => setSidebarOpen(false)}
+                      >
+                        <item.icon className="w-4 h-4" />
+                        <span>{item.name}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
 
             {/* Settings Section with Submenu */}
             <div className="space-y-1">

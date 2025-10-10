@@ -201,4 +201,66 @@ export const profileAPI = {
     api.post('/profile/knowledge/manual', data),
 };
 
+// Leads API
+export const leadsAPI = {
+  // Get all leads with optional filters
+  getAll: (params?: {
+    temperature?: 'hot' | 'warm' | 'cold';
+    status?: string;
+    minScore?: number;
+  }) =>
+    api.get('/leads', { params }),
+
+  // Get lead statistics
+  getStats: () =>
+    api.get('/leads/stats'),
+
+  // Get single lead by ID
+  getById: (id: string) =>
+    api.get(`/leads/${id}`),
+
+  // Get lead activities/timeline
+  getActivities: (id: string) =>
+    api.get(`/leads/${id}/activities`),
+
+  // Generate/regenerate lead profile
+  generateProfile: (contactId: string) =>
+    api.post('/leads/generate', { contactId }),
+
+  // Detect intent from message
+  detectIntent: (message: string) =>
+    api.post('/leads/detect-intent', { message }),
+
+  // Update lead status
+  updateStatus: (id: string, status: string, notes?: string) =>
+    api.put(`/leads/${id}/status`, { status, notes }),
+
+  // Add note to lead
+  addNote: (id: string, note: string) =>
+    api.post(`/leads/${id}/notes`, { note }),
+
+  // Qualify/disqualify lead
+  qualifyLead: (id: string, qualified: boolean, notes?: string) =>
+    api.put(`/leads/${id}/qualify`, { qualified, notes }),
+
+  // Update lead profile details
+  updateProfile: (id: string, data: {
+    contact_name?: string;
+    phone_number?: string;
+    email?: string;
+    company_name?: string;
+    job_title?: string;
+    industry?: string;
+    team_size?: string;
+    website?: string;
+    location?: string;
+    street_address?: string;
+    city?: string;
+    state_province?: string;
+    postal_code?: string;
+    country?: string;
+  }) =>
+    api.put(`/leads/${id}/profile`, data),
+};
+
 export default api;

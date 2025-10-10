@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { contactListsApi } from '@/lib/api/broadcasts';
 import type { ContactList, ContactListMember } from '@/types';
+import { MoreVertical, Download, Edit, Trash2 } from 'lucide-react';
 
 export default function ContactListsPage() {
   const router = useRouter();
@@ -19,10 +20,26 @@ export default function ContactListsPage() {
   const [formData, setFormData] = useState({ name: '', description: '' });
   const [memberFormData, setMemberFormData] = useState({ phone_number: '', full_name: '' });
   const [csvFile, setCsvFile] = useState<File | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     loadLists();
   }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (openDropdown && !target.closest('.dropdown-container')) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [openDropdown]);
 
   const loadLists = async () => {
     try {
@@ -158,12 +175,20 @@ export default function ContactListsPage() {
           <h1 className="text-2xl font-bold text-gray-900">Contact Lists</h1>
           <p className="text-sm text-gray-600 mt-1">Manage your broadcast contact lists</p>
         </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-        >
-          + Create List
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => router.push('/campaigns')}
+            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+          >
+            Back to Campaigns
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            + Create List
+          </button>
+        </div>
       </div>
 
       {/* Lists Grid */}
@@ -194,24 +219,59 @@ export default function ContactListsPage() {
               >
                 View Contacts
               </button>
-              <button
-                onClick={() => openImportModal(list)}
-                className="px-3 py-2 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                Import
-              </button>
-              <button
-                onClick={() => openEditModal(list)}
-                className="px-3 py-2 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDeleteList(list.id)}
-                className="px-3 py-2 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
-              >
-                Delete
-              </button>
+              
+              {/* Actions Dropdown */}
+              <div className="relative dropdown-container">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenDropdown(openDropdown === list.id ? null : list.id);
+                  }}
+                  className="px-3 py-2 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <MoreVertical className="w-4 h-4" />
+                </button>
+                
+                {openDropdown === list.id && (
+                  <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                    <div className="py-1">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openImportModal(list);
+                          setOpenDropdown(null);
+                        }}
+                        className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-2"
+                      >
+                        <Download className="w-4 h-4" />
+                        <span>Import</span>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openEditModal(list);
+                          setOpenDropdown(null);
+                        }}
+                        className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-2"
+                      >
+                        <Edit className="w-4 h-4" />
+                        <span>Edit</span>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteList(list.id);
+                          setOpenDropdown(null);
+                        }}
+                        className="w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        <span>Delete</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ))}
@@ -330,80 +390,113 @@ export default function ContactListsPage() {
       {/* Members Modal */}
       {showMembersModal && selectedList && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[80vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4 text-gray-900">
-              {selectedList.name} - Contacts ({membersTotal})
-            </h2>
-
-            {/* Add Member Form */}
-            <div className="bg-gray-50 p-4 rounded-lg mb-4">
-              <h3 className="font-medium mb-3 text-gray-900">Add Contact</h3>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={memberFormData.phone_number}
-                  onChange={(e) =>
-                    setMemberFormData({ ...memberFormData, phone_number: e.target.value })
-                  }
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
-                  placeholder="Phone number (e.g., +94771234567)"
-                />
-                <input
-                  type="text"
-                  value={memberFormData.full_name}
-                  onChange={(e) =>
-                    setMemberFormData({ ...memberFormData, full_name: e.target.value })
-                  }
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
-                  placeholder="Full name (optional)"
-                />
+          <div className="bg-white rounded-lg w-full max-w-3xl max-h-[80vh] flex flex-col">
+            {/* Sticky Header Section */}
+            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 pb-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-gray-900">
+                  {selectedList.name} - Contacts ({membersTotal})
+                </h2>
                 <button
-                  onClick={handleAddMember}
-                  disabled={!memberFormData.phone_number}
-                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50"
+                  onClick={() => setShowMembersModal(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  aria-label="Close"
                 >
-                  Add
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
+              </div>
+
+              {/* Add Member Form */}
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h3 className="font-medium mb-3 text-gray-900">Add Contact</h3>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={memberFormData.phone_number}
+                    onChange={(e) =>
+                      setMemberFormData({ ...memberFormData, phone_number: e.target.value })
+                    }
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
+                    placeholder="Phone number (e.g., +94771234567)"
+                  />
+                  <input
+                    type="text"
+                    value={memberFormData.full_name}
+                    onChange={(e) =>
+                      setMemberFormData({ ...memberFormData, full_name: e.target.value })
+                    }
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-900 placeholder-gray-500"
+                    placeholder="Full name (optional)"
+                  />
+                  <button
+                    onClick={handleAddMember}
+                    disabled={!memberFormData.phone_number}
+                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50"
+                  >
+                    Add
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Members List */}
-            <div className="space-y-2">
-              {members.map((member) => (
-                <div
-                  key={member.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                >
-                  <div>
-                    <p className="font-medium text-gray-900">
-                      {member.full_name || 'Unnamed Contact'}
-                    </p>
-                    <p className="text-gray-600">{member.phone_number}</p>
-                    {member.opted_out && (
-                      <span className="text-xs text-red-600 mt-1 inline-block">Opted Out</span>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => handleRemoveMember(member.id)}
-                    className="px-3 py-1 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto p-6 pt-4">
+
+              {/* Members List */}
+              <div className="space-y-2">
+                {members.map((member) => (
+                  <div
+                    key={member.id}
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                   >
-                    Remove
-                  </button>
-                </div>
-              ))}
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <p className="font-medium text-gray-900">
+                          {member.full_name || 'Unnamed Contact'}
+                        </p>
+                        {member.opted_out ? (
+                          <span className="text-xs font-medium text-red-600">Opted: Out</span>
+                        ) : (
+                          <span className="text-xs font-medium text-green-600">Opted: In</span>
+                        )}
+                      </div>
+                      <p className="text-gray-600">{member.phone_number}</p>
+                      
+                      {/* Display custom fields if they exist */}
+                      {(() => {
+                        if (!member.custom_fields) return null;
+                        try {
+                          const fields = typeof member.custom_fields === 'string' 
+                            ? JSON.parse(member.custom_fields) 
+                            : member.custom_fields;
+                          
+                          if (Object.keys(fields).length > 0) {
+                            return (
+                              <p className="text-xs text-gray-500 mt-1 truncate">
+                                <span className="font-medium">Custom Fields -</span>{' '}
+                                {Object.entries(fields).map(([key, value]) => `${key}: ${String(value)}`).join(', ')}
+                              </p>
+                            );
+                          }
+                        } catch (e) { /* Ignore parsing errors for invalid JSON */ }
+                        return null;
+                      })()}
+                    </div>
+                    <button
+                      onClick={() => handleRemoveMember(member.id)}
+                      className="ml-4 px-3 py-1 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
 
-              {members.length === 0 && (
-                <p className="text-center text-gray-500 py-8">No contacts in this list yet</p>
-              )}
-            </div>
-
-            <div className="flex justify-end mt-6">
-              <button
-                onClick={() => setShowMembersModal(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                Close
-              </button>
+                {members.length === 0 && (
+                  <p className="text-center text-gray-500 py-8">No contacts in this list yet</p>
+                )}
+              </div>
             </div>
           </div>
         </div>

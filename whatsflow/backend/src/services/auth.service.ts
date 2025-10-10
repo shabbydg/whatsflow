@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { query } from '../config/database.js';
 import { generateToken } from '../utils/jwt.js';
 import { v4 as uuidv4 } from 'uuid';
+import logger from '../utils/logger.js';
 
 export class AuthService {
   async register(email: string, password: string, fullName: string) {
@@ -31,6 +32,16 @@ export class AuthService {
       'INSERT INTO business_profiles (id, user_id, business_name) VALUES (?, ?, ?)',
       [businessProfileId, userId, `${fullName}'s Business`]
     );
+
+    // Auto-start trial subscription (lazy import to avoid circular dependency)
+    try {
+      const { subscriptionService } = await import('./billing/subscription.service.js');
+      await subscriptionService.startTrial(userId);
+      logger.info(`Trial subscription started for new user: ${userId}`);
+    } catch (error) {
+      logger.error('Failed to start trial for new user:', error);
+      // Don't fail registration if trial creation fails
+    }
 
     // Generate token
     const token = generateToken({ userId, email });

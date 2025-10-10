@@ -20,6 +20,7 @@ import QRCode from 'qrcode';
 import { aiChatService } from './ai/chat.service.js';
 import { aiManager } from './ai/ai-manager.service.js';
 import { emailService } from './email.service.js';
+import { leadIntelligenceService } from './lead-intelligence.service.js';
 
 const activeSockets = new Map<string, WASocket>();
 const reconnectionAttempts = new Map<string, number>();
@@ -531,6 +532,21 @@ export class WhatsAppService {
         });
 
         logger.info(`✅ Message saved and emitted: ${messageId} ${direction} ${isFromMe ? 'to' : 'from'} ${phoneNumber}`);
+
+        // Lead Intelligence: Analyze inbound messages for lead generation
+        if (!isFromMe && direction === 'inbound') {
+          try {
+            await leadIntelligenceService.updateLeadFromMessage(
+              contactId,
+              businessProfileId,
+              messageText,
+              true
+            );
+          } catch (leadError) {
+            logger.error('Error updating lead intelligence:', leadError);
+            // Don't block message flow if lead intelligence fails
+          }
+        }
 
         // AI Auto-Reply: Only respond to inbound messages (not our own)
         if (!isFromMe && direction === 'inbound') {

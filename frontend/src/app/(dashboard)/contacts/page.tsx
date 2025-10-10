@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react';
 import { contactsAPI, whatsappAPI } from '@/lib/api';
 import { Contact, Tag } from '@/types';
-import { Search, UserPlus, Tag as TagIcon, Phone, Mail, RefreshCw } from 'lucide-react';
+import { Search, UserPlus, Tag as TagIcon, Phone, Mail, RefreshCw, Target } from 'lucide-react';
 import { formatDate, formatPhone } from '@/lib/utils';
+import Link from 'next/link';
 
 export default function ContactsPage() {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -100,6 +101,13 @@ export default function ContactsPage() {
           <p className="text-gray-600 mt-1">Manage your WhatsApp contacts</p>
         </div>
         <div className="flex items-center space-x-3">
+          <Link
+            href="/leads"
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors"
+          >
+            <Target className="w-4 h-4" />
+            <span>View Leads</span>
+          </Link>
           <button
             onClick={handleSyncContacts}
             disabled={syncing}
