@@ -1,19 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Shield } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useAdminAuthStore } from '@/stores/adminAuthStore';
-import { api } from '@/lib/api';
+import { adminAPI } from '@/lib/api';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const { setAdmin } = useAdminAuthStore();
+  const { setAdmin, isAuthenticated, _hasHydrated } = useAdminAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Redirect to dashboard if already logged in
+  useEffect(() => {
+    if (_hasHydrated && isAuthenticated()) {
+      router.push('/dashboard');
+    }
+  }, [_hasHydrated, isAuthenticated, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,16 +28,23 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      // TODO: Replace with actual admin login endpoint when backend is ready
-      const response = await api.post('/admin/auth/login', {
-        email,
-        password,
-      });
+      const response = await adminAPI.login(email, password);
+      console.log('Login response:', response.data);
 
-      const { admin, token } = response.data;
+      // Response structure: { success: true, data: { admin, token } }
+      const { admin, token } = response.data.data;
+      console.log('Destructured - Admin:', admin);
+      console.log('Destructured - Token:', token);
+      
       setAdmin(admin, token);
+      
+      // Give zustand time to persist
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      console.log('Navigating to dashboard...');
       router.push('/dashboard');
     } catch (err: any) {
+      console.error('Login error:', err);
       setError(err.response?.data?.message || 'Invalid credentials');
     } finally {
       setLoading(false);

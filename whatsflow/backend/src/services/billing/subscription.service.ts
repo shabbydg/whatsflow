@@ -33,6 +33,21 @@ export interface Subscription {
 
 export class SubscriptionService {
   /**
+   * Parse subscription row to ensure numeric fields are numbers
+   */
+  private parseSubscriptionRow(row: any): Subscription {
+    return {
+      ...row,
+      current_price: (() => {
+        const price = parseFloat(row.current_price);
+        return isNaN(price) ? 0 : price;
+      })(),
+      cancel_at_period_end: row.cancel_at_period_end ?? false,
+      is_free: row.is_free ?? false,
+    };
+  }
+
+  /**
    * Get user's current subscription
    */
   async getUserSubscription(userId: string): Promise<Subscription | null> {
@@ -45,7 +60,7 @@ export class SubscriptionService {
       return null;
     }
 
-    return rows[0];
+    return this.parseSubscriptionRow(rows[0]);
   }
 
   /**
@@ -342,56 +357,6 @@ export class SubscriptionService {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
     return Math.max(0, diffDays);
-  }
-
-  /**
-   * Make account free (admin only)
-   */
-  async makeAccountFree(userId: string, reason: string): Promise<any> {
-    const subscriptions: any = await query('SELECT * FROM subscriptions WHERE user_id = ?', [
-      userId,
-    ]);
-
-    if (!Array.isArray(subscriptions) || subscriptions.length === 0) {
-      throw new Error('No subscription found');
-    }
-
-    const subscription = subscriptions[0];
-
-    await query(
-      'UPDATE subscriptions SET is_free = true, free_reason = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
-      [reason, subscription.id]
-    );
-
-    logger.info(`Account made free: ${userId} - Reason: ${reason}`);
-
-    const updatedSub = await this.getUserSubscription(userId);
-    return updatedSub?.subscription;
-  }
-
-  /**
-   * Remove free status (admin only)
-   */
-  async removeFreeStatus(userId: string): Promise<any> {
-    const subscriptions: any = await query('SELECT * FROM subscriptions WHERE user_id = ?', [
-      userId,
-    ]);
-
-    if (!Array.isArray(subscriptions) || subscriptions.length === 0) {
-      throw new Error('No subscription found');
-    }
-
-    const subscription = subscriptions[0];
-
-    await query(
-      'UPDATE subscriptions SET is_free = false, free_reason = NULL, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
-      [subscription.id]
-    );
-
-    logger.info(`Free status removed: ${userId}`);
-
-    const updatedSub = await this.getUserSubscription(userId);
-    return updatedSub?.subscription;
   }
 }
 

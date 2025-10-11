@@ -10,14 +10,18 @@ interface PlanCardProps {
 }
 
 export function PlanCard({ plan, billingCycle, currentPlanId, onSelect, isPopular }: PlanCardProps) {
-  const price = billingCycle === 'annual' ? plan.price_annual / 12 : plan.price_monthly;
-  const totalPrice = billingCycle === 'annual' ? plan.price_annual : plan.price_monthly;
+  // Convert prices to numbers (MySQL DECIMAL fields come as strings)
+  const priceMonthly = typeof plan.price_monthly === 'string' ? parseFloat(plan.price_monthly) : plan.price_monthly;
+  const priceAnnual = typeof plan.price_annual === 'string' ? parseFloat(plan.price_annual) : plan.price_annual;
+  
+  const price = billingCycle === 'annual' ? priceAnnual / 12 : priceMonthly;
+  const totalPrice = billingCycle === 'annual' ? priceAnnual : priceMonthly;
   const isCurrent = plan.id === currentPlanId;
   const isTrial = plan.slug === 'trial';
 
   // Calculate savings for annual
-  const annualSavings = plan.price_monthly * 12 - plan.price_annual;
-  const savingsPercent = Math.round((annualSavings / (plan.price_monthly * 12)) * 100);
+  const annualSavings = priceMonthly * 12 - priceAnnual;
+  const savingsPercent = Math.round((annualSavings / (priceMonthly * 12)) * 100);
 
   // Feature list
   const features: string[] = [];
@@ -57,7 +61,7 @@ export function PlanCard({ plan, billingCycle, currentPlanId, onSelect, isPopula
 
   return (
     <div
-      className={`relative bg-white rounded-lg border-2 p-6 ${
+      className={`relative bg-white rounded-lg border-2 p-6 flex flex-col h-full ${
         isPopular
           ? 'border-purple-600 shadow-lg'
           : isCurrent
@@ -91,7 +95,7 @@ export function PlanCard({ plan, billingCycle, currentPlanId, onSelect, isPopula
         )}
         
         <div className="flex items-baseline justify-center">
-          {plan.price_monthly === 0 ? (
+          {priceMonthly === 0 ? (
             <span className="text-4xl font-bold text-gray-900">FREE</span>
           ) : (
             <>
@@ -103,7 +107,7 @@ export function PlanCard({ plan, billingCycle, currentPlanId, onSelect, isPopula
           )}
         </div>
 
-        {billingCycle === 'annual' && plan.price_monthly > 0 && (
+        {billingCycle === 'annual' && priceMonthly > 0 && (
           <p className="text-sm text-green-600 mt-2">
             Save ${annualSavings.toFixed(0)}/year ({savingsPercent}% off)
           </p>
@@ -114,8 +118,8 @@ export function PlanCard({ plan, billingCycle, currentPlanId, onSelect, isPopula
         )}
       </div>
 
-      {/* Features */}
-      <ul className="space-y-3 mb-6">
+      {/* Features - flex-grow to take available space */}
+      <ul className="space-y-3 mb-6 flex-grow">
         {features.map((feature, idx) => (
           <li key={idx} className="flex items-start">
             <Check className="h-5 w-5 text-green-600 mr-3 flex-shrink-0 mt-0.5" />
@@ -124,11 +128,11 @@ export function PlanCard({ plan, billingCycle, currentPlanId, onSelect, isPopula
         ))}
       </ul>
 
-      {/* CTA Button */}
+      {/* CTA Button - pushed to bottom */}
       <button
         onClick={onSelect}
         disabled={isCurrent}
-        className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors ${
+        className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors mt-auto ${
           isCurrent
             ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
             : isPopular

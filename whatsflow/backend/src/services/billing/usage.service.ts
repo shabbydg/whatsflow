@@ -31,6 +31,16 @@ export interface Usage {
 
 export class UsageService {
   /**
+   * Parse usage row to ensure numeric fields are numbers
+   */
+  private parseUsageRow(row: any): Usage {
+    return {
+      ...row,
+      overage_credits_used: parseFloat(row.overage_credits_used || 0),
+    };
+  }
+
+  /**
    * Get current usage for user
    */
   async getCurrentUsage(userId: string): Promise<Usage | null> {
@@ -45,7 +55,7 @@ export class UsageService {
       return null;
     }
 
-    return rows[0];
+    return this.parseUsageRow(rows[0]);
   }
 
   /**

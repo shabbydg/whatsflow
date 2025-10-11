@@ -24,11 +24,13 @@ export interface Plan {
 
 export class PlanService {
   /**
-   * Parse plan row to ensure JSON fields are objects
+   * Parse plan row to ensure JSON fields are objects and prices are numbers
    */
   private parsePlanRow(row: any): Plan {
     return {
       ...row,
+      price_monthly: parseFloat(row.price_monthly),
+      price_annual: parseFloat(row.price_annual),
       features: typeof row.features === 'string' ? JSON.parse(row.features) : row.features,
       limits: typeof row.limits === 'string' ? JSON.parse(row.limits) : row.limits,
     };

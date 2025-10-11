@@ -12,17 +12,31 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { isAuthenticated } = useAdminAuthStore();
+  const { isAuthenticated, _hasHydrated, token } = useAdminAuthStore();
 
   useEffect(() => {
-    if (!isAuthenticated()) {
+    console.log('Dashboard layout - hasHydrated:', _hasHydrated, 'isAuthenticated:', isAuthenticated(), 'token:', token ? 'present' : 'missing');
+    
+    // Wait for store to hydrate before checking auth
+    if (_hasHydrated && !isAuthenticated()) {
+      console.log('Not authenticated, redirecting to login...');
       router.push('/login');
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, _hasHydrated, token, router]);
 
-  if (!isAuthenticated()) {
+  // Show nothing while hydrating
+  if (!_hasHydrated) {
+    console.log('Store not hydrated yet, waiting...');
     return null;
   }
+
+  // Redirect to login if not authenticated
+  if (!isAuthenticated()) {
+    console.log('Not authenticated, returning null');
+    return null;
+  }
+
+  console.log('Rendering dashboard layout');
 
   return (
     <div className="flex h-screen overflow-hidden">

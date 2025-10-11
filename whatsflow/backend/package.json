@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "PORT=2152 nodemon --exec tsx src/app.ts",
     "build": "tsc",
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "admin:create": "tsx scripts/create-admin.ts",
+    "admin:reset": "tsx scripts/reset-admin-password.ts"
   },
   "keywords": [
     "whatsapp",

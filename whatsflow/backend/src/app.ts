@@ -44,20 +44,37 @@ dotenv.config();
 const app: Application = express();
 const httpServer = createServer(app);
 
+// CORS configuration - allow multiple origins
+const allowedOrigins = process.env.CORS_ORIGIN 
+  ? process.env.CORS_ORIGIN.split(',')
+  : [
+      'http://localhost:3000',  // Main frontend
+      'http://localhost:3001',  // Admin panel
+      'http://localhost:5153',  // Admin panel (alternate port)
+      'http://localhost:4000',  // Landing page
+    ];
+
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    // Allow requests with no origin (like mobile apps or Postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      logger.warn(`CORS blocked origin: ${origin}`);
+      callback(null, false);
+    }
+  },
+  credentials: true,
+};
+
 // Create Socket.IO server for real-time updates
 export const io = new Server(httpServer, {
-  cors: {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-    credentials: true,
-  },
+  cors: corsOptions,
 });
 
 // Middleware
 app.use(helmet()); // Security headers
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-  credentials: true,
-}));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('combined', {
@@ -153,7 +170,7 @@ const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, async () => {
   logger.info(`🚀 Server running on port ${PORT}`);
   logger.info(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
-  logger.info(`🌐 CORS origin: ${process.env.CORS_ORIGIN || 'http://localhost:3000'}`);
+  logger.info(`🌐 CORS origins: ${allowedOrigins.join(', ')}`);
 
   // Initialize WhatsApp connections on startup
   setImmediate(async () => {

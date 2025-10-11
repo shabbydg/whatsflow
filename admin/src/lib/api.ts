@@ -16,9 +16,17 @@ const api = axios.create({
 
 // Add token to requests
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('admin_token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  // Get token from zustand persisted state
+  const authStorage = localStorage.getItem('admin-auth-storage');
+  if (authStorage) {
+    try {
+      const { state } = JSON.parse(authStorage);
+      if (state?.token) {
+        config.headers.Authorization = `Bearer ${state.token}`;
+      }
+    } catch (error) {
+      console.error('Failed to parse auth storage:', error);
+    }
   }
   return config;
 });
@@ -28,7 +36,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin-auth-storage');
       window.location.href = '/login';
     }
     return Promise.reject(error);
