@@ -27,6 +27,8 @@ import planRoutes from './routes/plan.routes.js';
 import subscriptionRoutes from './routes/subscription.routes.js';
 import billingRoutes from './routes/billing.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import publicAPIRoutes from './routes/public-api.routes.js';
+import apiKeysRoutes from './routes/api-keys.routes.js';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler.middleware.js';
@@ -108,6 +110,8 @@ app.use('/api/v1/plans', planRoutes);
 app.use('/api/v1/subscription', subscriptionRoutes);
 app.use('/api/v1/billing', billingRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/api-keys', apiKeysRoutes);
+app.use('/api/public/v1', publicAPIRoutes);
 
 // Root endpoint
 app.get('/', (req: Request, res: Response) => {

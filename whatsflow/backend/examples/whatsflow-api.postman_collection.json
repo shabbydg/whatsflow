@@ -1,0 +1,343 @@
+{
+  "info": {
+    "name": "WhatsFlow Public API",
+    "description": "Complete collection of WhatsFlow API endpoints for testing and integration",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{api_key}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:2152/api/public/v1",
+      "type": "string"
+    },
+    {
+      "key": "api_key",
+      "value": "wf_live_your_key_here",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Messaging",
+      "item": [
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"+94771234567\",\n  \"message\": \"Hello from WhatsFlow API!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/messages/send",
+              "host": ["{{base_url}}"],
+              "path": ["messages", "send"]
+            },
+            "description": "Send a WhatsApp message to a contact"
+          }
+        },
+        {
+          "name": "Get Message Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/messages/:message_id",
+              "host": ["{{base_url}}"],
+              "path": ["messages", ":message_id"],
+              "variable": [
+                {
+                  "key": "message_id",
+                  "value": "msg_abc123"
+                }
+              ]
+            },
+            "description": "Get the status and details of a sent message"
+          }
+        },
+        {
+          "name": "List Messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/messages?page=1&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["messages"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "contact_id",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get recent messages with pagination"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Devices",
+      "item": [
+        {
+          "name": "List Devices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/devices",
+              "host": ["{{base_url}}"],
+              "path": ["devices"]
+            },
+            "description": "Get all connected WhatsApp devices"
+          }
+        },
+        {
+          "name": "Get Device Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/devices/:device_id/status",
+              "host": ["{{base_url}}"],
+              "path": ["devices", ":device_id", "status"],
+              "variable": [
+                {
+                  "key": "device_id",
+                  "value": "device_abc123"
+                }
+              ]
+            },
+            "description": "Check connection status of a specific device"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contacts",
+      "item": [
+        {
+          "name": "List Contacts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/contacts?page=1&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["contacts"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Get all contacts with pagination"
+          }
+        },
+        {
+          "name": "Get Contact",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/contacts/:contact_id",
+              "host": ["{{base_url}}"],
+              "path": ["contacts", ":contact_id"],
+              "variable": [
+                {
+                  "key": "contact_id",
+                  "value": "contact_abc123"
+                }
+              ]
+            },
+            "description": "Get details of a specific contact"
+          }
+        },
+        {
+          "name": "Verify Contact",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"+94771234567\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/contacts/verify",
+              "host": ["{{base_url}}"],
+              "path": ["contacts", "verify"]
+            },
+            "description": "Check if a phone number exists on WhatsApp"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "List Webhooks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/webhooks",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks"]
+            },
+            "description": "Get all configured webhooks"
+          }
+        },
+        {
+          "name": "Create Webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://your-domain.com/webhooks/whatsflow\",\n  \"events\": [\"message.received\", \"device.disconnected\"],\n  \"description\": \"Production webhook\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/webhooks",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks"]
+            },
+            "description": "Register a new webhook endpoint"
+          }
+        },
+        {
+          "name": "Update Webhook",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": true,\n  \"events\": [\"message.received\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/webhooks/:webhook_id",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", ":webhook_id"],
+              "variable": [
+                {
+                  "key": "webhook_id",
+                  "value": "webhook_abc123"
+                }
+              ]
+            },
+            "description": "Update webhook configuration"
+          }
+        },
+        {
+          "name": "Delete Webhook",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/webhooks/:webhook_id",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", ":webhook_id"],
+              "variable": [
+                {
+                  "key": "webhook_id",
+                  "value": "webhook_abc123"
+                }
+              ]
+            },
+            "description": "Remove a webhook"
+          }
+        },
+        {
+          "name": "Test Webhook",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/webhooks/:webhook_id/test",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", ":webhook_id", "test"],
+              "variable": [
+                {
+                  "key": "webhook_id",
+                  "value": "webhook_abc123"
+                }
+              ]
+            },
+            "description": "Send a test event to webhook"
+          }
+        },
+        {
+          "name": "Get Webhook Deliveries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/webhooks/:webhook_id/deliveries?limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", ":webhook_id", "deliveries"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "webhook_id",
+                  "value": "webhook_abc123"
+                }
+              ]
+            },
+            "description": "View webhook delivery logs"
+          }
+        }
+      ]
+    }
+  ]
+}
+

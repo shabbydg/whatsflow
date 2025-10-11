@@ -21,6 +21,7 @@ import { aiChatService } from './ai/chat.service.js';
 import { aiManager } from './ai/ai-manager.service.js';
 import { emailService } from './email.service.js';
 import { leadIntelligenceService } from './lead-intelligence.service.js';
+import { webhookService } from './webhook.service.js';
 
 const activeSockets = new Map<string, WASocket>();
 const reconnectionAttempts = new Map<string, number>();
@@ -362,6 +363,24 @@ export class WhatsAppService {
               );
               reconnectionAttempts.delete(connectionId);
 
+              // Trigger device.disconnected webhook
+              const conn: any = await query('SELECT * FROM whatsapp_connections WHERE id = ?', [connectionId]);
+              if (Array.isArray(conn) && conn.length > 0) {
+                webhookService.triggerEvent(conn[0].business_profile_id, 'device.disconnected', {
+                  event: 'device.disconnected',
+                  timestamp: new Date().toISOString(),
+                  data: {
+                    device_id: connectionId,
+                    phone_number: conn[0].phone_number,
+                    device_name: conn[0].device_name || 'Unknown Device',
+                    reason: 'Max reconnection attempts reached',
+                    disconnected_at: new Date().toISOString(),
+                  },
+                }).catch((error) => {
+                  logger.error('Failed to trigger device.disconnected webhook:', error);
+                });
+              }
+
               // Send disconnect alert
               await this.sendDisconnectAlert(connectionId);
             }
@@ -389,6 +408,20 @@ export class WhatsAppService {
           );
 
           activeSockets.set(connectionId, sock);
+
+          // Trigger device.connected webhook
+          webhookService.triggerEvent(businessProfileId, 'device.connected', {
+            event: 'device.connected',
+            timestamp: new Date().toISOString(),
+            data: {
+              device_id: connectionId,
+              phone_number: sock.user?.id?.split(':')[0] || 'unknown',
+              device_name: connection.device_name || 'Unknown Device',
+              connected_at: new Date().toISOString(),
+            },
+          }).catch((error) => {
+            logger.error('Failed to trigger device.connected webhook:', error);
+          });
 
           // Emit connection success event
           io.to(`business-${businessProfileId}`).emit('whatsapp-connected', {
@@ -518,7 +551,7 @@ export class WhatsAppService {
         // Emit Socket.IO event
         const room = `business-${businessProfileId}`;
         logger.info(`Emitting new-message event to room: ${room} (${direction})`);
-        io.to(room).emit('new-message', {
+        const messageData = {
           id: messageId,
           business_profile_id: businessProfileId,
           contact_id: contactId,
@@ -529,7 +562,29 @@ export class WhatsAppService {
           content: messageText,
           status,
           created_at: new Date(),
-        });
+        };
+        
+        io.to(room).emit('new-message', messageData);
+
+        // Trigger webhook for message.received (only for inbound messages)
+        if (direction === 'inbound') {
+          webhookService.triggerEvent(businessProfileId, 'message.received', {
+            event: 'message.received',
+            timestamp: new Date().toISOString(),
+            data: {
+              message_id: messageId,
+              contact_id: contactId,
+              phone_number: phoneNumber,
+              contact_name: contactRecord[0]?.name || phoneNumber,
+              message: messageText,
+              message_type: 'text',
+              device_id: deviceId,
+              created_at: new Date().toISOString(),
+            },
+          }).catch((error) => {
+            logger.error('Failed to trigger webhook:', error);
+          });
+        }
 
         logger.info(`✅ Message saved and emitted: ${messageId} ${direction} ${isFromMe ? 'to' : 'from'} ${phoneNumber}`);
 

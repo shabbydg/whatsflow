@@ -80,6 +80,14 @@ npm run dev
 - **Dashboard Analytics** - See message statistics
 - **Responsive Design** - Works on desktop and mobile
 - **Socket.IO** - Real-time updates across the app
+- **Public API** - Full REST API for external integrations
+- **Webhooks** - Real-time event notifications
+- **API Key Management** - Secure token-based authentication
+- **AI Auto-Reply** - Multi-language AI responses
+- **Lead Generation** - Automatic lead intelligence
+- **Broadcast Campaigns** - Send to multiple contacts
+- **Multi-Device Support** - Multiple WhatsApp numbers
+- **Billing System** - Subscription management with PayHere
 
 ---
 
@@ -300,15 +308,28 @@ curl -X GET http://localhost:2152/api/v1/whatsapp/status \
 The application uses MySQL with the following tables:
 
 - **users** - User accounts
-- **business_profiles** - Business information (auto-created on registration)
-- **whatsapp_connections** - WhatsApp session data
+- **business_profiles** - Business information
+- **whatsapp_connections** - WhatsApp device connections (multi-device support)
 - **contacts** - Contact information
 - **messages** - Message history
 - **tags** - Contact tags
 - **contact_tags** - Many-to-many relationship for contact tags
-- **campaigns** - Broadcast campaigns (future feature)
-- **campaign_recipients** - Campaign delivery tracking
-- **api_keys** - API authentication (future feature)
+- **personas** - AI personalities
+- **devices** - Alias for whatsapp_connections
+- **broadcasts** - Broadcast campaigns
+- **broadcast_recipients** - Campaign delivery tracking
+- **contact_lists** - Contact list management
+- **contact_list_members** - List membership
+- **api_keys** - Public API authentication tokens
+- **webhooks** - Webhook endpoint configurations
+- **webhook_deliveries** - Webhook delivery logs
+- **api_request_logs** - API usage analytics
+- **plans** - Subscription plans
+- **subscriptions** - User subscriptions
+- **payments** - Payment records
+- **usage_tracking** - Usage metrics
+- **lead_profiles** - AI-generated lead intelligence
+- **lead_activities** - Lead activity timeline
 - **daily_stats** - Analytics data
 
 ---
@@ -342,6 +363,56 @@ CORS_ORIGIN=http://localhost:2153
 NEXT_PUBLIC_API_URL=http://localhost:2152
 NEXT_PUBLIC_SOCKET_URL=http://localhost:2152
 ```
+
+---
+
+## 🔌 Public API & Integrations
+
+WhatsFlow includes a full-featured Public API for integrating with external systems.
+
+### Quick Start
+
+1. **Create API Key:** Dashboard → Settings → API Keys
+2. **View Documentation:** http://localhost:2153/docs
+3. **Send Test Message:**
+   ```bash
+   curl -X POST http://localhost:2152/api/public/v1/messages/send \
+     -H "Authorization: Bearer wf_live_your_key" \
+     -H "Content-Type: application/json" \
+     -d '{"phone_number": "+94771234567", "message": "Hello!"}'
+   ```
+
+### API Features
+
+- ✅ **Messaging API** - Send/receive messages programmatically
+- ✅ **Device Management** - Monitor connection status
+- ✅ **Contact Access** - List and search contacts
+- ✅ **Webhooks** - Real-time event notifications
+- ✅ **Rate Limiting** - Plan-based quotas
+- ✅ **Secure Authentication** - API key with scopes
+- ✅ **SDKs** - Node.js and Python libraries included
+
+### Resources
+
+- **Quick Start:** `API_QUICKSTART.md`
+- **Setup Guide:** `API_SETUP_GUIDE.md`
+- **Full Reference:** `whatsflow/backend/API_PUBLIC_REFERENCE.md`
+- **Implementation Details:** `API_IMPLEMENTATION_SUMMARY.md`
+- **Examples:** `whatsflow/backend/examples/`
+  - Node.js SDK
+  - Python SDK
+  - Webhook servers (Express.js & Flask)
+  - Postman collection
+  - Test scripts
+
+### Common Use Cases
+
+- 💼 Accounting software integration (invoice reminders)
+- 🎫 Support ticket creation from WhatsApp
+- 📊 CRM synchronization
+- 🤖 Custom automation workflows
+- 📱 Multi-platform messaging
+- 🔔 Real-time notifications
 
 ---
 

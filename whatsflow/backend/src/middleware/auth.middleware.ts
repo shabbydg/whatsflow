@@ -8,6 +8,11 @@ export interface AuthRequest extends Request {
     email: string;
     businessProfileId?: string;
   };
+  apiContext?: {
+    businessProfileId: string;
+    userId: string;
+    subscription: any;
+  };
 }
 
 export const authenticate = async (

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/stores/authStore';
-import { MessageSquare, Users, Settings, BarChart3, LogOut, Menu, X, ChevronDown, ChevronRight, Smartphone, Brain, Globe, Megaphone, Target, CreditCard } from 'lucide-react';
+import { MessageSquare, Users, Settings, BarChart3, LogOut, Menu, X, ChevronDown, ChevronRight, Smartphone, Brain, Globe, Megaphone, Target, CreditCard, Key, Webhook, BookOpen } from 'lucide-react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -36,6 +36,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { name: 'Contacts', href: '/contacts', icon: Users },
     { name: 'Leads', href: '/leads', icon: Target },
     { name: 'Campaigns', href: '/campaigns', icon: Megaphone },
+    { name: 'API Docs', href: '/docs', icon: BookOpen },
   ];
 
   const [billingOpen, setBillingOpen] = useState(false);
@@ -45,6 +46,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { name: 'Devices', href: '/settings/devices', icon: Smartphone },
     { name: 'Personas', href: '/settings/personas', icon: Brain },
     { name: 'Business Profile', href: '/settings/profile', icon: Globe },
+    { name: 'API Keys', href: '/settings/api-keys', icon: Key },
+    { name: 'Webhooks', href: '/settings/webhooks', icon: Webhook },
   ];
 
   const billingNavigation = [
