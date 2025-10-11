@@ -17,6 +17,13 @@ export class UsageEnforcementService {
     action: 'send_message' | 'send_ai_message' | 'add_device' | 'add_contact' | 'send_broadcast'
   ): Promise<{ allowed: boolean; reason?: string; needsUpgrade?: boolean }> {
     try {
+      // Check if user is a test account (bypass all restrictions)
+      const users: any = await query('SELECT is_test_account FROM users WHERE id = ?', [userId]);
+      if (users && users[0]?.is_test_account) {
+        logger.info(`Test account action allowed: ${userId} - ${action}`);
+        return { allowed: true };
+      }
+
       const result = await usageService.getUserUsageWithLimits(userId);
       
       if (!result) {

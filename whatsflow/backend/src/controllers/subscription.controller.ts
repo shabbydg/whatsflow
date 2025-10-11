@@ -22,6 +22,10 @@ export class SubscriptionController {
         return res.status(401).json({ error: 'Not authenticated' });
       }
 
+      // Check if test account
+      const users: any = await query('SELECT is_test_account FROM users WHERE id = ?', [req.user.id]);
+      const isTestAccount = users && users[0]?.is_test_account;
+
       const subData = await subscriptionService.getSubscriptionWithPlan(req.user.id);
       
       if (!subData) {
@@ -31,12 +35,34 @@ export class SubscriptionController {
       // Get current usage
       const usage = await usageService.getCurrentUsage(req.user.id);
 
+      // Override limits for test accounts
+      if (isTestAccount) {
+        subData.plan.limits = {
+          devices: -1,
+          contacts: -1,
+          messages_per_month: -1,
+          ai_messages_per_month: -1,
+          broadcasts_per_month: -1,
+          knowledge_base_pages: -1,
+        };
+        subData.plan.features = {
+          ai_replies: true,
+          file_uploads: true,
+          broadcasts: true,
+          advanced_analytics: true,
+          priority_support: true,
+          custom_integrations: true,
+          api_access: true,
+        };
+      }
+
       res.json({
         success: true,
         data: {
           subscription: subData.subscription,
           plan: subData.plan,
           usage,
+          is_test_account: isTestAccount,
         },
       });
     } catch (error: any) {

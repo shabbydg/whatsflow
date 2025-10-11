@@ -9,7 +9,10 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "admin:create": "tsx scripts/create-admin.ts",
-    "admin:reset": "tsx scripts/reset-admin-password.ts"
+    "admin:reset": "tsx scripts/reset-admin-password.ts",
+    "test-account:enable": "tsx scripts/toggle-test-account.ts enable",
+    "test-account:disable": "tsx scripts/toggle-test-account.ts disable",
+    "test-account:list": "tsx scripts/toggle-test-account.ts list"
   },
   "keywords": [
     "whatsapp",
