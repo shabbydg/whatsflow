@@ -78,26 +78,18 @@ I've created **complete guides** for you:
 ## 🗺️ Deployment Roadmap
 
 ### Step 1: Get Server (30 minutes)
-**Options:**
-1. **DigitalOcean** (Recommended)
-   - Go to: https://digitalocean.com
-   - Create Droplet
-   - Choose: Ubuntu 22.04 LTS
-   - Size: 4GB RAM, 2 CPU ($24/month)
-   - Region: Closest to your users
-
-2. **Hetzner** (Cheapest)
-   - Go to: https://hetzner.com
-   - More affordable (~$7-15/month)
-   - Europe-based
-
-3. **Vultr** (Good alternative)
-   - Similar to DigitalOcean
-   - Global locations
+**✅ CHOSEN SPECS:**
+- **Memory:** 2 GB RAM
+- **Processing:** 2 vCPUs  
+- **Storage:** 60 GB SSD
+- **Transfer:** 3 TB bandwidth
+- **Price:** $12 USD/month
+- **Promotion:** First 90 days FREE! 🎉
 
 **What you'll get:**
 - IP address (e.g., 165.227.123.45)
 - Root SSH access
+- Perfect for launching WhatsFlow
 
 ---
 
@@ -312,13 +304,13 @@ Before going live:
 
 ### Monthly Costs:
 ```
-VPS Server (4GB):        $20-30
+VPS Server (2GB):        $12/month (FREE for 90 days!)
 Domain (you own):        $0
 SSL (Let's Encrypt):     $0
 PayHere (per transaction): ~3% + fees
 SMTP (Gmail):            $0 (or SendGrid free tier)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Total:                   $20-30/month
+Total:                   $12/month (FREE until month 4!)
 ```
 
 ### Revenue Potential (Month 1):
@@ -328,11 +320,11 @@ Total:                   $20-30/month
 1 Enterprise user:       $299
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Total Revenue:           $1,084
-Costs:                   -$30
-Profit:                  $1,054 💰
+Costs:                   $0 (FREE for 90 days!)
+Profit:                  $1,084 💰
 ```
 
-**Break-even:** Just 1 paying user!
+**Break-even:** $0 - You're already profitable with FREE hosting!
 
 ---
 

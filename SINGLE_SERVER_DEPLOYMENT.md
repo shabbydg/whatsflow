@@ -26,10 +26,25 @@ All on a single VPS server using Nginx, PM2, MySQL, and Redis.
 - [x] DNS Access to create A records
 - [x] SSH Access to server
 
-### Server Specs:
-- **Minimum:** 2 CPU, 4GB RAM, 50GB SSD (~$20/month)
-- **Recommended:** 4 CPU, 8GB RAM, 100GB SSD (~$40/month)
+### Server Specs (✅ CHOSEN):
+- **CPU:** 2 vCPUs
+- **RAM:** 2 GB  
+- **Storage:** 60 GB SSD
+- **Bandwidth:** 3 TB transfer
+- **Price:** $12 USD/month
+- **Promotion:** First 90 days FREE! 🎉
 - **OS:** Ubuntu 22.04 LTS
+
+### 📊 Capacity Analysis:
+```
+Concurrent Users:        200-300 active
+Total Users:            1,000-2,000 registered
+WhatsApp Sessions:      50-100 devices
+Messages/day:           10,000-20,000
+AI Requests/day:        1,000-3,000
+Database Size:          Up to 10GB
+Backup Frequency:       Daily (plenty of space)
+```
 
 ---
 
@@ -715,10 +730,10 @@ pm2 install pm2-server-monit
 ## 💰 Cost Breakdown
 
 ### Monthly Costs:
-- **VPS Server (4GB):** $20-30/month
+- **VPS Server (2GB):** $12/month (FREE for 90 days!)
 - **Domain (already owned):** $0
 - **SSL Certificates:** $0 (Let's Encrypt)
-- **Total:** ~$20-30/month
+- **Total:** $12/month (FREE until month 4!)
 
 vs. Multi-service setup:
 - Vercel: $20+/month
@@ -727,7 +742,7 @@ vs. Multi-service setup:
 - Redis Cloud: $10+/month
 - Total: $70+/month
 
-**Savings: ~$40-50/month** 💰
+**Savings: ~$58/month** 💰 (Even more with free trial!)
 
 ---
 
