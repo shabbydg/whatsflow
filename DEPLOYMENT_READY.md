@@ -198,7 +198,7 @@ sudo mysql -u root -p
 **In MySQL shell:**
 ```sql
 CREATE DATABASE whatsflow CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'whatsflow'@'localhost' IDENTIFIED BY 'your_strong_password';
+CREATE USER 'whatsflow'@'localhost' IDENTIFIED BY 'SHTech2152!';
 GRANT ALL PRIVILEGES ON whatsflow.* TO 'whatsflow'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
@@ -299,14 +299,14 @@ DB_HOST=localhost
 DB_PORT=3306
 DB_NAME=whatsflow
 DB_USER=whatsflow
-DB_PASSWORD=your_strong_password
+DB_PASSWORD=SHTech2152!
 
 # Redis
 REDIS_HOST=localhost
 REDIS_PORT=6379
 
 # JWT
-JWT_SECRET=your_very_secure_jwt_secret_here_make_it_long_and_random
+JWT_SECRET=rNA2S9felp4XOiv+k9vRcQw3aeJnq+4ws6PxwNZ83oJWle5ZpVwgmAaRaViRBokMnvFiYC0+Qzlw43DvJ0NOLg==
 JWT_EXPIRES_IN=7d
 
 # WhatsApp
