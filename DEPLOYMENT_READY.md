@@ -675,7 +675,7 @@ mysql -u whatsflow -p whatsflow
 INSERT INTO admin_users (id, email, password, role, created_at) VALUES (
   UUID(), 
   'admin@whatsflow.digitalarc.lk', 
-  '$2b$10$your_hashed_password_here', 
+  '$2b$10$SXuo/hWJ6pH6oy96RNIzle0o1QwyEBa0KtAT.R7MagkrHOC/72eVy', 
   'super_admin', 
   NOW()
 );
