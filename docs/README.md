@@ -154,6 +154,89 @@ Technical documentation for backend services and APIs.
 
 ---
 
+### [8. Deployment Documentation](./deployment/) ⭐
+Complete production deployment guides and infrastructure setup.
+
+| # | Document | Description | Status |
+|---|----------|-------------|--------|
+| 01 | [Deployment Ready Guide](./deployment/01.%20Deployment%20Ready%20Guide.md) | **Complete deployment checklist** | ✅ Main |
+| 02 | [Single Server Deployment](./deployment/02.%20Single%20Server%20Deployment.md) | Detailed single-server setup | ✅ Reference |
+| 03 | [Server Capacity Analysis](./deployment/03.%20Server%20Capacity%20Analysis.md) | Capacity planning (2GB RAM, 2 vCPUs) | ✅ Planning |
+| 04 | [Deployment Options Summary](./deployment/04.%20Deployment%20Options%20Summary.md) | Quick options comparison | ✅ Overview |
+| 05 | [Deployment Comparison](./deployment/05.%20Deployment%20Comparison.md) | Detailed architecture comparison | ✅ Decision |
+| 06 | [AWS Lambda Integration](./deployment/06.%20AWS%20Lambda%20Integration.md) | Hybrid Lambda deployment | ✅ Advanced |
+| 07 | [Recent Changes Summary](./deployment/07.%20Recent%20Changes%20Summary.md) | Latest deployment updates | ✅ Updates |
+
+**Deployment Features:**
+- 🚀 One-stop automated deployment script
+- 📋 Complete beginner-friendly guide
+- 🔄 Zero-downtime update strategies
+- 💰 $12/month server specs (90 days free)
+- ⚡ 15-minute deployment time
+- 🛡️ SSL, firewall, security automated
+
+**Recommended:** Start with [01. Deployment Ready Guide](./deployment/01.%20Deployment%20Ready%20Guide.md)
+
+---
+
+### [9. Test Account Management](./test-accounts/)
+Guides for managing test accounts with unlimited access.
+
+| # | Document | Description | Use Case |
+|---|----------|-------------|----------|
+| 01 | [Test Account Guide](./test-accounts/01.%20Test%20Account%20Guide.md) | Complete guide with all methods | 📖 Reference |
+| 02 | [Quick Test Account Setup](./test-accounts/02.%20Quick%20Test%20Account%20Setup.md) | Fast commands and quick start | ⚡ Quick |
+
+**Test Account Features:**
+- ✅ Bypass all billing restrictions
+- ✅ Unlimited access to all features
+- ✅ Full AI functionality
+- ✅ Perfect for testing and demos
+- ✅ Easy CLI management
+
+**Quick Command:**
+```bash
+npm run test-account:enable -- user@example.com "Testing"
+```
+
+---
+
+### [10. Payment System](./payment-system/)
+Payment failure controls and billing system behavior.
+
+| # | Document | Description | Audience |
+|---|----------|-------------|----------|
+| 01 | [Payment Failure System](./payment-system/01.%20Payment%20Failure%20System.md) | Payment failure controls | 🔒 Critical |
+
+**Key Features:**
+- 🚫 Immediate feature suspension on payment failure
+- ✅ Automatic access restoration on payment success
+- 📊 Comprehensive monitoring and logging
+- 🔄 Automated retry mechanism (4 attempts)
+- 📧 User notifications at every step
+
+**Critical Behavior:**
+- Payment fails → ALL features blocked instantly
+- Payment succeeds → ALL features restored instantly
+- No grace period for failed payments
+- Read-only access during suspension
+
+---
+
+### [11. Configuration Guides](./guides/)
+Setup guides for various system configurations.
+
+| # | Document | Description | Category |
+|---|----------|-------------|----------|
+| 01 | [Gmail Setup Guide](./guides/01.%20Gmail%20Setup%20Guide.md) | Google Mail configuration | 📧 Email |
+
+**Available Guides:**
+- 📧 **Email Setup:** Gmail configuration with app passwords
+- 🔐 **API Keys:** Google Gemini, Claude, OpenAI setup
+- 💳 **PayHere:** Payment gateway setup (see feature-implementations)
+
+---
+
 ## 🎯 Quick Navigation
 
 ### I'm a...
@@ -164,9 +247,10 @@ Technical documentation for backend services and APIs.
 3. Explore [Implementation Tracking](./implementation-tracking/)
 
 **DevOps Engineer:**
-1. See [Quick Deploy Guide](./setup-guides/02.%20Quick%20Deploy%20Guide.md)
-2. Review [Testing Guide](./setup-guides/03.%20Testing%20Guide.md)
-3. Check [API Deployment Checklist](./api-implementation/09.%20Deployment%20Checklist.md)
+1. See [Deployment Ready Guide](./deployment/01.%20Deployment%20Ready%20Guide.md) ⭐
+2. Review [Single Server Deployment](./deployment/02.%20Single%20Server%20Deployment.md)
+3. Check [Server Capacity Analysis](./deployment/03.%20Server%20Capacity%20Analysis.md)
+4. Review [Testing Guide](./setup-guides/03.%20Testing%20Guide.md)
 
 **Product Manager:**
 1. Read [Implementation Complete](./implementation-tracking/09.%20Implementation%20Complete.md)
@@ -300,12 +384,14 @@ Technical documentation for backend services and APIs.
 
 ## 📊 Statistics
 
-- **Total Documentation Files:** 69+
+- **Total Documentation Files:** 90+
+- **Documentation Categories:** 11
 - **Lines of Code:** 60,000+
 - **API Endpoints:** 119+ (100 internal + 19 public)
-- **Features Implemented:** 20+
+- **Features Implemented:** 25+
 - **Supported Devices:** Unlimited
 - **AI Providers:** 3 (Gemini, Claude, OpenAI)
+- **Deployment Options:** 3 (Single Server, Hybrid Lambda, Multi-Service)
 - **Development Time:** 3 months
 - **Team Size:** 1 developer + AI assistance
 
@@ -334,7 +420,25 @@ Technical documentation for backend services and APIs.
 
 ---
 
-**Last Updated:** October 11, 2025  
+## 🗂️ Documentation Organization
+
+### Production Deployment:
+→ [Deployment Documentation](./deployment/) - Complete production deployment guides
+
+### Development & Testing:
+→ [Setup Guides](./setup-guides/) - Quick start and testing  
+→ [Test Accounts](./test-accounts/) - Unlimited access accounts
+
+### Payment & Billing:
+→ [Payment System](./payment-system/) - Payment failure controls  
+→ [PayHere Setup](./feature-implementations/07.%20PayHere%20Payment%20Setup.md)
+
+### Configuration:
+→ [Configuration Guides](./guides/) - Email, API keys, services
+
+---
+
+**Last Updated:** October 13, 2025  
 **Version:** 1.0  
 **Maintained by:** WhatsFlow Team
 
