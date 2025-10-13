@@ -15,7 +15,7 @@ export class UsageEnforcementService {
   async canPerformAction(
     userId: string,
     action: 'send_message' | 'send_ai_message' | 'add_device' | 'add_contact' | 'send_broadcast'
-  ): Promise<{ allowed: boolean; reason?: string; needsUpgrade?: boolean }> {
+  ): Promise<{ allowed: boolean; reason?: string; needsUpgrade?: boolean; isPastDue?: boolean }> {
     try {
       // Check if user is a test account (bypass all restrictions)
       const users: any = await query('SELECT is_test_account FROM users WHERE id = ?', [userId]);
@@ -24,23 +24,55 @@ export class UsageEnforcementService {
         return { allowed: true };
       }
 
+      // CRITICAL: Check subscription status FIRST
+      const subscriptions: any = await query(
+        'SELECT status, is_free FROM subscriptions WHERE user_id = ? ORDER BY created_at DESC LIMIT 1',
+        [userId]
+      );
+
+      if (!subscriptions || subscriptions.length === 0) {
+        return { 
+          allowed: false, 
+          reason: 'No active subscription. Please subscribe to continue using WhatsFlow.',
+          needsUpgrade: true 
+        };
+      }
+
+      const subscription = subscriptions[0];
+
+      // Check if account is free (unlimited, bypass all restrictions)
+      if (subscription.is_free) {
+        return { allowed: true };
+      }
+
+      // CRITICAL: Block ALL actions if subscription is past_due, canceled, expired, or paused
+      const blockedStatuses = ['past_due', 'canceled', 'expired', 'paused'];
+      if (blockedStatuses.includes(subscription.status)) {
+        const statusMessages = {
+          past_due: 'Your payment failed. Please update your payment method to continue using WhatsFlow.',
+          canceled: 'Your subscription has been canceled. Please reactivate to continue.',
+          expired: 'Your subscription has expired. Please renew to continue using WhatsFlow.',
+          paused: 'Your account is currently paused. Please contact support to reactivate.',
+        };
+
+        logger.warn(`Action blocked for user ${userId} - Subscription status: ${subscription.status}`);
+        
+        return {
+          allowed: false,
+          reason: statusMessages[subscription.status as keyof typeof statusMessages],
+          needsUpgrade: true,
+          isPastDue: subscription.status === 'past_due',
+        };
+      }
+
+      // Only proceed with usage limit checks if subscription is active or in trial
       const result = await usageService.getUserUsageWithLimits(userId);
       
       if (!result) {
-        return { allowed: false, reason: 'No active subscription' };
+        return { allowed: false, reason: 'Unable to verify subscription limits' };
       }
 
       const { usage, limits } = result;
-
-      // Check if account is free (unlimited)
-      const subscriptions: any = await query(
-        'SELECT is_free FROM subscriptions WHERE user_id = ?',
-        [userId]
-      );
-      const isFree = subscriptions[0]?.is_free;
-      if (isFree) {
-        return { allowed: true };
-      }
 
       switch (action) {
         case 'send_message':

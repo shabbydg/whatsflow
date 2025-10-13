@@ -213,12 +213,13 @@ export class PaymentService {
         return;
       }
 
-      // Update subscription status
-      if (subscription.status === 'trial' || subscription.status === 'past_due') {
+      // CRITICAL: Immediately reactivate subscription and restore access
+      if (subscription.status === 'trial' || subscription.status === 'past_due' || subscription.status === 'expired') {
         await query(
           `UPDATE subscriptions SET status = ? WHERE id = ?`,
           ['active', subscription.id]
         );
+        logger.info(`✅ Access RESTORED for user ${payment.user_id} - Payment successful`);
       }
 
       // Extend subscription period
@@ -240,6 +241,14 @@ export class PaymentService {
         [now, periodEnd, periodEnd, subscription.id]
       );
 
+      // Clear any pending retry attempts
+      await query(
+        `UPDATE payment_retry_log 
+         SET status = 'succeeded', attempted_at = NOW() 
+         WHERE subscription_id = ? AND status = 'pending'`,
+        [subscription.id]
+      );
+
       // Generate invoice number
       const invoiceNumber = await this.generateInvoiceNumber();
       await query(
@@ -247,7 +256,7 @@ export class PaymentService {
         [invoiceNumber, payment.id]
       );
 
-      logger.info(`Successful payment processed for user ${payment.user_id}`);
+      logger.info(`✅ Successful payment processed for user ${payment.user_id} - Full access granted`);
 
       // TODO: Send payment success email with invoice
       // TODO: Generate PDF invoice
@@ -261,18 +270,27 @@ export class PaymentService {
    */
   private async handleFailedPayment(payment: Payment, errorMessage: string): Promise<void> {
     try {
-      // Update subscription status
+      // CRITICAL: Immediately suspend subscription and block all access
       await query(
         'UPDATE subscriptions SET status = ? WHERE id = ?',
         ['past_due', payment.subscription_id]
       );
 
+      logger.error(`🚫 ACCESS SUSPENDED for user ${payment.user_id} - Payment failed: ${errorMessage}`);
+      logger.error(`Payment ID: ${payment.id}, Subscription ID: ${payment.subscription_id}`);
+
       // Schedule retry
       await this.schedulePaymentRetry(payment.id, payment.subscription_id);
 
-      logger.warn(`Failed payment for subscription ${payment.subscription_id}: ${errorMessage}`);
+      // Log critical event for monitoring
+      logger.warn(
+        `PAYMENT FAILURE: User ${payment.user_id} has been moved to past_due status. ` +
+        `All features blocked until payment succeeds. Error: ${errorMessage}`
+      );
 
-      // TODO: Send payment failed email
+      // TODO: Send payment failed email with update payment method link
+      // TODO: Create in-app notification
+      // TODO: Send SMS/WhatsApp notification for critical payment failures
     } catch (error) {
       logger.error('Error handling failed payment:', error);
     }
