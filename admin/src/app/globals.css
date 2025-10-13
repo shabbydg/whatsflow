@@ -5,12 +5,24 @@
   --foreground: #171717;
 }
 
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
 body {
-  color: var(--foreground);
   background: var(--background);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -19,6 +31,24 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+/* Form inputs styling - ensure good contrast */
+input, textarea, select {
+  color: #111827; /* text-gray-900 */
+}
+
+input::placeholder, textarea::placeholder {
+  color: #6b7280; /* text-gray-500 */
+}
+
+/* Modal text contrast fixes */
+.modal-title {
+  color: #111827 !important; /* text-gray-900 */
+}
+
+.modal-text {
+  color: #374151 !important; /* text-gray-700 */
 }
 
 
