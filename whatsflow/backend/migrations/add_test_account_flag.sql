@@ -3,8 +3,8 @@
 
 -- Add test account flag to users table
 ALTER TABLE users 
-ADD COLUMN IF NOT EXISTS is_test_account BOOLEAN DEFAULT false,
-ADD COLUMN IF NOT EXISTS test_account_notes TEXT;
+ADD COLUMN is_test_account BOOLEAN DEFAULT false,
+ADD COLUMN test_account_notes TEXT;
 
 -- Add index for quick lookups
 CREATE INDEX IF NOT EXISTS idx_users_test_account ON users(is_test_account);
