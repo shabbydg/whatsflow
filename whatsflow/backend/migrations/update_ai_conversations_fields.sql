@@ -4,26 +4,33 @@
 -- Add column comments for better documentation
 ALTER TABLE ai_conversations
   MODIFY COLUMN device_id VARCHAR(36) DEFAULT NULL
-  COMMENT 'WhatsApp device/connection that handled this conversation',
+  COMMENT 'WhatsApp device/connection that handled this conversation';
 
+ALTER TABLE ai_conversations
   MODIFY COLUMN message_id VARCHAR(36) DEFAULT NULL
-  COMMENT 'Reference to the original WhatsApp message that triggered the AI response',
+  COMMENT 'Reference to the original WhatsApp message that triggered the AI response';
 
+ALTER TABLE ai_conversations
   MODIFY COLUMN model VARCHAR(50) DEFAULT NULL
-  COMMENT 'AI model used (e.g., gemini-2.5-flash, claude-3-5-haiku)',
+  COMMENT 'AI model used (e.g., gemini-2.5-flash, claude-3-5-haiku)';
 
+ALTER TABLE ai_conversations
   MODIFY COLUMN tokens_used INT(11) DEFAULT 0
-  COMMENT 'Total tokens used (input + output) for cost tracking',
+  COMMENT 'Total tokens used (input + output) for cost tracking';
 
+ALTER TABLE ai_conversations
   MODIFY COLUMN input_tokens INT(11) DEFAULT 0
-  COMMENT 'Tokens used in the input/prompt',
+  COMMENT 'Tokens used in the input/prompt';
 
+ALTER TABLE ai_conversations
   MODIFY COLUMN output_tokens INT(11) DEFAULT 0
-  COMMENT 'Tokens used in the AI response',
+  COMMENT 'Tokens used in the AI response';
 
+ALTER TABLE ai_conversations
   MODIFY COLUMN user_message TEXT DEFAULT NULL
-  COMMENT 'The user message that prompted the AI response',
+  COMMENT 'The user message that prompted the AI response';
 
+ALTER TABLE ai_conversations
   MODIFY COLUMN ai_response TEXT DEFAULT NULL
   COMMENT 'The AI-generated response';
 

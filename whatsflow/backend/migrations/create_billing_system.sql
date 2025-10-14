@@ -295,8 +295,8 @@ CREATE TABLE IF NOT EXISTS admin_activity_logs (
 -- ==================== UPDATE USERS TABLE ====================
 
 -- Add trial tracking to users table
-ALTER TABLE users ADD COLUMN IF NOT EXISTS trial_used BOOLEAN DEFAULT false;
-ALTER TABLE users ADD COLUMN IF NOT EXISTS trial_started_at TIMESTAMP;
+ALTER TABLE users ADD COLUMN trial_used BOOLEAN DEFAULT false;
+ALTER TABLE users ADD COLUMN trial_started_at TIMESTAMP;
 
 -- ==================== INDEXES FOR PERFORMANCE ====================
 

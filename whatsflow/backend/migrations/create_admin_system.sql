@@ -36,8 +36,8 @@ CREATE TABLE IF NOT EXISTS admin_activity_logs (
 
 -- Add refund columns to payments table
 ALTER TABLE payments 
-ADD COLUMN IF NOT EXISTS refund_reason TEXT,
-ADD COLUMN IF NOT EXISTS refunded_at TIMESTAMP NULL;
+ADD COLUMN refund_reason TEXT,
+ADD COLUMN refunded_at TIMESTAMP NULL;
 
 -- Create default super admin (password: Admin@123)
 -- IMPORTANT: Change this password immediately after first login!
