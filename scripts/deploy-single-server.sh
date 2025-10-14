@@ -93,7 +93,7 @@ if ! command -v mysql &> /dev/null; then
     sudo apt install -y mysql-server
     
     # Secure MySQL installation automatically
-    sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$DB_PASSWORD';"
+    sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'SHTech2152!';"
     sudo mysql -e "DELETE FROM mysql.user WHERE User='';"
     sudo mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
     sudo mysql -e "DROP DATABASE IF EXISTS test;"
@@ -187,21 +187,21 @@ print_info "Step 9: Setting up database..."
 cd "$HOME/whatsflow"
 
 # Create database and user
-mysql -u root -p"$DB_PASSWORD" -e "
+mysql -u root -p"SHTech2152!" -e "
 CREATE DATABASE IF NOT EXISTS whatsflow CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER IF NOT EXISTS 'whatsflow'@'localhost' IDENTIFIED BY '$DB_PASSWORD';
+CREATE USER IF NOT EXISTS 'whatsflow'@'localhost' IDENTIFIED BY 'SHTech2152!';
 GRANT ALL PRIVILEGES ON whatsflow.* TO 'whatsflow'@'localhost';
 FLUSH PRIVILEGES;
 "
 
 # Run all migrations
 cd whatsflow/backend
-mysql -u whatsflow -p"$DB_PASSWORD" whatsflow < scripts/setup-database.sql
-mysql -u whatsflow -p"$DB_PASSWORD" whatsflow < migrations/create_billing_system.sql
-mysql -u whatsflow -p"$DB_PASSWORD" whatsflow < migrations/create_admin_system.sql
-mysql -u whatsflow -p"$DB_PASSWORD" whatsflow < migrations/seed_plans.sql
-mysql -u whatsflow -p"$DB_PASSWORD" whatsflow < migrations/add_lead_generation.sql
-mysql -u whatsflow -p"$DB_PASSWORD" whatsflow < migrations/add_test_account_flag.sql
+mysql -u whatsflow -p"SHTech2152!" whatsflow < scripts/setup-database.sql
+mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/create_billing_system.sql
+mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/create_admin_system.sql
+mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/seed_plans.sql
+mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/add_lead_generation.sql
+mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/add_test_account_flag.sql
 
 print_success "Database created and migrations run"
 
@@ -225,7 +225,7 @@ DB_HOST=localhost
 DB_PORT=3306
 DB_NAME=whatsflow
 DB_USER=whatsflow
-DB_PASSWORD=$DB_PASSWORD
+DB_PASSWORD=SHTech2152!
 
 # Redis
 REDIS_HOST=localhost
@@ -465,7 +465,7 @@ print_success "SSL certificates installed"
 # ============================================
 
 print_info "Step 17: Creating admin user..."
-mysql -u whatsflow -p"$DB_PASSWORD" whatsflow -e "
+mysql -u whatsflow -p"SHTech2152!" whatsflow -e "
 INSERT IGNORE INTO admin_users (id, email, password, role, created_at) VALUES (
   UUID(), 
   '$ADMIN_EMAIL', 
