@@ -1,13 +1,47 @@
 -- Add Test Account Flag
 -- Allows marking accounts as test accounts that bypass billing restrictions
 
--- Add test account flag to users table
-ALTER TABLE users 
-ADD COLUMN is_test_account BOOLEAN DEFAULT false,
-ADD COLUMN test_account_notes TEXT;
+-- Add test account flag to users table (idempotent)
+SET @dbname = DATABASE();
 
--- Add index for quick lookups
-CREATE INDEX IF NOT EXISTS idx_users_test_account ON users(is_test_account);
+-- Add is_test_account column if not exists
+SET @preparedStatement = (SELECT IF(
+  (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+   WHERE table_name = 'users'
+   AND table_schema = @dbname
+   AND column_name = 'is_test_account') > 0,
+  'SELECT 1',
+  'ALTER TABLE users ADD COLUMN is_test_account BOOLEAN DEFAULT false'
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+DEALLOCATE PREPARE alterIfNotExists;
+
+-- Add test_account_notes column if not exists
+SET @preparedStatement = (SELECT IF(
+  (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+   WHERE table_name = 'users'
+   AND table_schema = @dbname
+   AND column_name = 'test_account_notes') > 0,
+  'SELECT 1',
+  'ALTER TABLE users ADD COLUMN test_account_notes TEXT'
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+DEALLOCATE PREPARE alterIfNotExists;
+
+-- Add index for quick lookups (idempotent)
+SET @preparedStatement = (SELECT IF(
+  (SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS
+   WHERE table_name = 'users'
+   AND table_schema = @dbname
+   AND index_name = 'idx_users_test_account') > 0,
+  'SELECT 1',
+  'CREATE INDEX idx_users_test_account ON users(is_test_account)'
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+DEALLOCATE PREPARE alterIfNotExists;
 
 -- Add test account tracking
 CREATE TABLE IF NOT EXISTS test_accounts_log (
