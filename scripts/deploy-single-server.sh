@@ -187,7 +187,7 @@ print_info "Step 9: Setting up database..."
 cd "$HOME/whatsflow"
 
 # Create database and user
-sudo mysql -u root -e "
+mysql -u root -p"SHTech2152!" -e "
 CREATE DATABASE IF NOT EXISTS whatsflow CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS 'whatsflow'@'localhost' IDENTIFIED BY 'SHTech2152!';
 GRANT ALL PRIVILEGES ON whatsflow.* TO 'whatsflow'@'localhost';
