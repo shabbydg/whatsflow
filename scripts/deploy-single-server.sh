@@ -48,17 +48,18 @@ if [ "$EUID" -eq 0 ]; then
     exit 1
 fi
 
-# Get user input for API keys
-echo "🔑 AI API Keys Configuration"
-echo "============================"
-echo ""
-
-read -p "Enter your Google Gemini API Key (GOOGLE_API_KEY): " GOOGLE_API_KEY
-read -p "Enter your Anthropic Claude API Key (ANTHROPIC_API_KEY): " ANTHROPIC_API_KEY
-read -p "Enter your OpenAI API Key (OPENAI_API_KEY): " OPENAI_API_KEY
-read -p "Enter your Google Mail App Password for $EMAIL_USER: " EMAIL_PASSWORD
-
-echo ""
+# Load environment variables from deploy-env.sh if it exists
+if [ -f "scripts/deploy-env.sh" ]; then
+    echo "🔑 Loading API keys from deploy-env.sh..."
+    source scripts/deploy-env.sh
+else
+    echo "⚠️  deploy-env.sh not found. Using default placeholder values."
+    echo "   Create scripts/deploy-env.sh with your actual API keys."
+    GOOGLE_API_KEY="${GOOGLE_API_KEY:-your_google_gemini_api_key_here}"
+    ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-your_anthropic_claude_api_key_here}"
+    OPENAI_API_KEY="${OPENAI_API_KEY:-}"
+    EMAIL_PASSWORD="${EMAIL_PASSWORD:-your_gmail_app_password_here}"
+fi
 echo "🚀 Starting complete deployment..."
 echo ""
 
