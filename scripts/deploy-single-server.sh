@@ -202,6 +202,7 @@ mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/create_billing_system.
 mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/create_admin_system.sql
 mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/seed_plans.sql
 mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/add_lead_generation.sql
+mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/add_lead_foreign_keys.sql
 mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/add_test_account_flag.sql
 
 print_success "Database created and migrations run"
