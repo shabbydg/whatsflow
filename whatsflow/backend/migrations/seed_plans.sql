@@ -159,7 +159,8 @@ VALUES (
   'System Administrator',
   'super_admin',
   true
-);
+)
+ON DUPLICATE KEY UPDATE email = email; -- Don't create if already exists
 
 -- Note: You'll need to generate the actual bcrypt hash for your password
 -- Example in Node.js: bcryptjs.hashSync('Admin@123', 10)
@@ -178,7 +179,8 @@ VALUES (
   NOW(),
   DATE_ADD(NOW(), INTERVAL 3 MONTH),
   true
-);
+)
+ON DUPLICATE KEY UPDATE code = code; -- Don't create if already exists
 
 -- ==================== VERIFICATION QUERIES ====================
 
