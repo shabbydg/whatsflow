@@ -185,16 +185,16 @@ SELECT
   c.profile_pic_url,
   c.last_message_at,
   bp.business_name,
-  (SELECT COUNT(*) FROM lead_activities la WHERE la.lead_profile_id = lp.id) as activity_count,
-  (SELECT COUNT(*) FROM messages m WHERE m.contact_id = lp.contact_id AND m.direction = 'inbound') as messages_received,
-  (SELECT COUNT(*) FROM messages m WHERE m.contact_id = lp.contact_id AND m.direction = 'outbound') as messages_sent,
+  (SELECT COUNT(*) FROM lead_activities la WHERE la.lead_profile_id COLLATE utf8mb4_unicode_ci = lp.id COLLATE utf8mb4_unicode_ci) as activity_count,
+  (SELECT COUNT(*) FROM messages m WHERE m.contact_id COLLATE utf8mb4_unicode_ci = lp.contact_id COLLATE utf8mb4_unicode_ci AND m.direction COLLATE utf8mb4_unicode_ci = 'inbound') as messages_received,
+  (SELECT COUNT(*) FROM messages m WHERE m.contact_id COLLATE utf8mb4_unicode_ci = lp.contact_id COLLATE utf8mb4_unicode_ci AND m.direction COLLATE utf8mb4_unicode_ci = 'outbound') as messages_sent,
   CASE 
     WHEN lp.lead_score >= 70 THEN 'hot'
     WHEN lp.lead_score >= 40 THEN 'warm'
     ELSE 'cold'
   END as calculated_temperature
 FROM lead_profiles lp
-JOIN contacts c ON lp.contact_id = c.id
-JOIN business_profiles bp ON lp.business_profile_id = bp.id
+JOIN contacts c ON lp.contact_id COLLATE utf8mb4_unicode_ci = c.id COLLATE utf8mb4_unicode_ci
+JOIN business_profiles bp ON lp.business_profile_id COLLATE utf8mb4_unicode_ci = bp.id COLLATE utf8mb4_unicode_ci
 ORDER BY lp.lead_score DESC, lp.updated_at DESC;
 
