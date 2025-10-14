@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# WhatsFlow Deployment Environment Variables
+# Copy this file to deploy-env.sh and fill in your actual API keys
+# DO NOT COMMIT deploy-env.sh TO GIT - IT CONTAINS SENSITIVE INFORMATION
+
+# AI API Keys
+export GOOGLE_API_KEY="your_google_gemini_api_key_here"
+export ANTHROPIC_API_KEY="your_anthropic_claude_api_key_here"
+export OPENAI_API_KEY="your_openai_api_key_here"
+
+# Email Configuration
+export EMAIL_PASSWORD="your_gmail_app_password_here"
+
+echo "🔑 Environment variables loaded for WhatsFlow deployment"
+echo "📧 Email: accounts@digitalarc.lk"
+echo "🤖 Google Gemini API Key: ${GOOGLE_API_KEY:0:10}..."
+echo "🤖 Anthropic Claude API Key: ${ANTHROPIC_API_KEY:0:10}..."
+echo ""
