@@ -3,9 +3,9 @@
 
 -- 1. Create lead_profiles table (without foreign keys initially)
 CREATE TABLE IF NOT EXISTS lead_profiles (
-  id VARCHAR(36) PRIMARY KEY,
-  contact_id VARCHAR(36) NOT NULL UNIQUE,
-  business_profile_id VARCHAR(36) NOT NULL,
+  id VARCHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci PRIMARY KEY,
+  contact_id VARCHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
+  business_profile_id VARCHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   
   -- Extracted Profile Information
   company_name VARCHAR(255),
@@ -64,8 +64,8 @@ CREATE TABLE IF NOT EXISTS lead_profiles (
 
 -- 2. Create lead_activities table (activity timeline)
 CREATE TABLE IF NOT EXISTS lead_activities (
-  id VARCHAR(36) PRIMARY KEY,
-  lead_profile_id VARCHAR(36) NOT NULL,
+  id VARCHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci PRIMARY KEY,
+  lead_profile_id VARCHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   activity_type ENUM(
     'profile_created',
     'message_received', 
@@ -95,8 +95,8 @@ CREATE TABLE IF NOT EXISTS lead_activities (
 
 -- 3. Create intent_keywords table (for custom lead scoring)
 CREATE TABLE IF NOT EXISTS intent_keywords (
-  id VARCHAR(36) PRIMARY KEY,
-  business_profile_id VARCHAR(36) NOT NULL,
+  id VARCHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci PRIMARY KEY,
+  business_profile_id VARCHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   keyword VARCHAR(100) NOT NULL,
   category ENUM('high_intent', 'medium_intent', 'low_intent', 'negative') NOT NULL,
   score_value INT DEFAULT 0 COMMENT 'Points to add/subtract from lead score',
@@ -168,7 +168,7 @@ SET @preparedStatement = (SELECT IF(
    AND (table_schema = @dbname)
    AND (column_name = @columnname)) > 0,
   "SELECT 1",
-  CONCAT("ALTER TABLE ", @tablename, " ADD COLUMN ", @columnname, " VARCHAR(36) NULL AFTER metadata")
+  CONCAT("ALTER TABLE ", @tablename, " ADD COLUMN ", @columnname, " VARCHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL AFTER metadata")
 ));
 PREPARE alterIfNotExists FROM @preparedStatement;
 EXECUTE alterIfNotExists;
