@@ -2,6 +2,33 @@
 -- This migration adds foreign key constraints after all tables are created
 -- to avoid column compatibility issues during table creation
 
+-- Add foreign key constraint for contacts -> lead_profiles (reverse lookup)
+SET @contacts_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES 
+                       WHERE TABLE_NAME = 'contacts' 
+                       AND TABLE_SCHEMA = DATABASE());
+
+SET @lead_profiles_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES 
+                            WHERE TABLE_NAME = 'lead_profiles' 
+                            AND TABLE_SCHEMA = DATABASE());
+
+SET @column_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+                     WHERE TABLE_NAME = 'contacts'
+                     AND COLUMN_NAME = 'lead_profile_id'
+                     AND TABLE_SCHEMA = DATABASE());
+
+SET @fk_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
+                  WHERE TABLE_NAME = 'contacts' 
+                  AND CONSTRAINT_NAME = 'fk_contact_lead_profile' 
+                  AND TABLE_SCHEMA = DATABASE());
+
+SET @sql = IF(@contacts_exists > 0 AND @lead_profiles_exists > 0 AND @column_exists > 0 AND @fk_exists = 0, 
+              'ALTER TABLE contacts ADD CONSTRAINT fk_contact_lead_profile FOREIGN KEY (lead_profile_id) REFERENCES lead_profiles(id) ON DELETE SET NULL',
+              'SELECT 1');
+
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
 -- Add foreign key constraint for lead_profiles -> contacts
 SET @contacts_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES 
                        WHERE TABLE_NAME = 'contacts' 

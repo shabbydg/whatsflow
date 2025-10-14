@@ -174,19 +174,7 @@ PREPARE alterIfNotExists FROM @preparedStatement;
 EXECUTE alterIfNotExists;
 DEALLOCATE PREPARE alterIfNotExists;
 
--- 6. Add foreign key constraint if column was just created
-SET @preparedStatement = (SELECT IF(
-  (SELECT COUNT(*) FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-   WHERE table_name = @tablename
-   AND column_name = @columnname
-   AND table_schema = @dbname
-   AND referenced_table_name = 'lead_profiles') > 0,
-  "SELECT 1",
-  CONCAT("ALTER TABLE ", @tablename, " ADD CONSTRAINT fk_contact_lead_profile FOREIGN KEY (", @columnname, ") REFERENCES lead_profiles(id) ON DELETE SET NULL")
-));
-PREPARE alterIfNotExists FROM @preparedStatement;
-EXECUTE alterIfNotExists;
-DEALLOCATE PREPARE alterIfNotExists;
+-- Note: Foreign key constraint for contacts.lead_profile_id is added in add_lead_foreign_keys.sql
 
 -- 7. Create view for lead dashboard (hot, warm, cold leads)
 CREATE OR REPLACE VIEW lead_dashboard AS
