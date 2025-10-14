@@ -34,10 +34,37 @@ CREATE TABLE IF NOT EXISTS admin_activity_logs (
   INDEX idx_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Add refund columns to payments table
-ALTER TABLE payments 
-ADD COLUMN refund_reason TEXT,
-ADD COLUMN refunded_at TIMESTAMP NULL;
+-- Add refund columns to payments table (safe to run multiple times)
+SET @dbname = DATABASE();
+SET @tablename = 'payments';
+
+-- Add refund_reason column if it doesn't exist
+SET @columnname = 'refund_reason';
+SET @preparedStatement = (SELECT IF(
+  (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+   WHERE (table_name = @tablename)
+   AND (table_schema = @dbname)
+   AND (column_name = @columnname)) > 0,
+  "SELECT 1",
+  CONCAT("ALTER TABLE ", @tablename, " ADD COLUMN ", @columnname, " TEXT")
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+DEALLOCATE PREPARE alterIfNotExists;
+
+-- Add refunded_at column if it doesn't exist
+SET @columnname = 'refunded_at';
+SET @preparedStatement = (SELECT IF(
+  (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+   WHERE (table_name = @tablename)
+   AND (table_schema = @dbname)
+   AND (column_name = @columnname)) > 0,
+  "SELECT 1",
+  CONCAT("ALTER TABLE ", @tablename, " ADD COLUMN ", @columnname, " TIMESTAMP NULL")
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+DEALLOCATE PREPARE alterIfNotExists;
 
 -- Create default super admin (password: Admin@123)
 -- IMPORTANT: Change this password immediately after first login!

@@ -294,15 +294,67 @@ CREATE TABLE IF NOT EXISTS admin_activity_logs (
 
 -- ==================== UPDATE USERS TABLE ====================
 
--- Add trial tracking to users table
-ALTER TABLE users ADD COLUMN trial_used BOOLEAN DEFAULT false;
-ALTER TABLE users ADD COLUMN trial_started_at TIMESTAMP;
+-- Add trial tracking to users table (safe to run multiple times)
+SET @dbname = DATABASE();
+SET @tablename = 'users';
+
+-- Add trial_used column if it doesn't exist
+SET @columnname = 'trial_used';
+SET @preparedStatement = (SELECT IF(
+  (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+   WHERE (table_name = @tablename)
+   AND (table_schema = @dbname)
+   AND (column_name = @columnname)) > 0,
+  "SELECT 1",
+  CONCAT("ALTER TABLE ", @tablename, " ADD COLUMN ", @columnname, " BOOLEAN DEFAULT false")
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+DEALLOCATE PREPARE alterIfNotExists;
+
+-- Add trial_started_at column if it doesn't exist
+SET @columnname = 'trial_started_at';
+SET @preparedStatement = (SELECT IF(
+  (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+   WHERE (table_name = @tablename)
+   AND (table_schema = @dbname)
+   AND (column_name = @columnname)) > 0,
+  "SELECT 1",
+  CONCAT("ALTER TABLE ", @tablename, " ADD COLUMN ", @columnname, " TIMESTAMP")
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+DEALLOCATE PREPARE alterIfNotExists;
 
 -- ==================== INDEXES FOR PERFORMANCE ====================
 
--- Add composite index for subscription queries
-ALTER TABLE subscriptions ADD INDEX idx_status_billing (status, next_billing_date);
+-- Add composite index for subscription queries (safe to run multiple times)
+SET @indexname = 'idx_status_billing';
+SET @tablename = 'subscriptions';
+SET @preparedStatement = (SELECT IF(
+  (SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS
+   WHERE (table_name = @tablename)
+   AND (index_name = @indexname)
+   AND (table_schema = @dbname)) > 0,
+  "SELECT 1",
+  CONCAT("ALTER TABLE ", @tablename, " ADD INDEX ", @indexname, " (status, next_billing_date)")
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+DEALLOCATE PREPARE alterIfNotExists;
 
--- Add index for payment queries
-ALTER TABLE payments ADD INDEX idx_subscription_status (subscription_id, status, created_at);
+-- Add index for payment queries (safe to run multiple times)
+SET @indexname = 'idx_subscription_status';
+SET @tablename = 'payments';
+SET @preparedStatement = (SELECT IF(
+  (SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS
+   WHERE (table_name = @tablename)
+   AND (index_name = @indexname)
+   AND (table_schema = @dbname)) > 0,
+  "SELECT 1",
+  CONCAT("ALTER TABLE ", @tablename, " ADD INDEX ", @indexname, " (subscription_id, status, created_at)")
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+DEALLOCATE PREPARE alterIfNotExists;
 
