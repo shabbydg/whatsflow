@@ -1,7 +1,7 @@
 -- Migration: Add Lead Generation & Intelligence System
 -- Enables AI-powered lead profiling, scoring, and intent detection
 
--- 1. Create lead_profiles table
+-- 1. Create lead_profiles table (without foreign keys initially)
 CREATE TABLE IF NOT EXISTS lead_profiles (
   id VARCHAR(36) PRIMARY KEY,
   contact_id VARCHAR(36) NOT NULL UNIQUE,
@@ -52,14 +52,39 @@ CREATE TABLE IF NOT EXISTS lead_profiles (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   
-  FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE,
-  FOREIGN KEY (business_profile_id) REFERENCES business_profiles(id) ON DELETE CASCADE,
   INDEX idx_lead_score (lead_score DESC),
   INDEX idx_lead_status (lead_status),
   INDEX idx_temperature (lead_temperature),
   INDEX idx_business_profile (business_profile_id),
   INDEX idx_decision_stage (decision_stage)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Add foreign key constraints after table creation (safe approach)
+SET @fk_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
+                  WHERE TABLE_NAME = 'lead_profiles' 
+                  AND CONSTRAINT_NAME = 'fk_lead_profile_contact' 
+                  AND TABLE_SCHEMA = DATABASE());
+
+SET @sql = IF(@fk_exists = 0, 
+              'ALTER TABLE lead_profiles ADD CONSTRAINT fk_lead_profile_contact FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE',
+              'SELECT 1');
+
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SET @fk_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
+                  WHERE TABLE_NAME = 'lead_profiles' 
+                  AND CONSTRAINT_NAME = 'fk_lead_profile_business' 
+                  AND TABLE_SCHEMA = DATABASE());
+
+SET @sql = IF(@fk_exists = 0, 
+              'ALTER TABLE lead_profiles ADD CONSTRAINT fk_lead_profile_business FOREIGN KEY (business_profile_id) REFERENCES business_profiles(id) ON DELETE CASCADE',
+              'SELECT 1');
+
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
 
 -- 2. Create lead_activities table (activity timeline)
 CREATE TABLE IF NOT EXISTS lead_activities (
@@ -86,10 +111,23 @@ CREATE TABLE IF NOT EXISTS lead_activities (
   created_by VARCHAR(36) COMMENT 'User ID who triggered the activity',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   
-  FOREIGN KEY (lead_profile_id) REFERENCES lead_profiles(id) ON DELETE CASCADE,
   INDEX idx_lead_activity (lead_profile_id, created_at DESC),
   INDEX idx_activity_type (activity_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Add foreign key constraint for lead_activities (safe approach)
+SET @fk_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
+                  WHERE TABLE_NAME = 'lead_activities' 
+                  AND CONSTRAINT_NAME = 'fk_lead_activity_profile' 
+                  AND TABLE_SCHEMA = DATABASE());
+
+SET @sql = IF(@fk_exists = 0, 
+              'ALTER TABLE lead_activities ADD CONSTRAINT fk_lead_activity_profile FOREIGN KEY (lead_profile_id) REFERENCES lead_profiles(id) ON DELETE CASCADE',
+              'SELECT 1');
+
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
 
 -- 3. Create intent_keywords table (for custom lead scoring)
 CREATE TABLE IF NOT EXISTS intent_keywords (
@@ -102,11 +140,24 @@ CREATE TABLE IF NOT EXISTS intent_keywords (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   
-  FOREIGN KEY (business_profile_id) REFERENCES business_profiles(id) ON DELETE CASCADE,
   UNIQUE KEY unique_keyword (business_profile_id, keyword),
   INDEX idx_business_profile (business_profile_id),
   INDEX idx_category (category)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Add foreign key constraint for intent_keywords (safe approach)
+SET @fk_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
+                  WHERE TABLE_NAME = 'intent_keywords' 
+                  AND CONSTRAINT_NAME = 'fk_intent_keywords_business' 
+                  AND TABLE_SCHEMA = DATABASE());
+
+SET @sql = IF(@fk_exists = 0, 
+              'ALTER TABLE intent_keywords ADD CONSTRAINT fk_intent_keywords_business FOREIGN KEY (business_profile_id) REFERENCES business_profiles(id) ON DELETE CASCADE',
+              'SELECT 1');
+
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
 
 -- 4. Insert default high-intent keywords for all business profiles
 INSERT IGNORE INTO intent_keywords (id, business_profile_id, keyword, category, score_value)
