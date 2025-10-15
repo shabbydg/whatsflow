@@ -477,13 +477,16 @@ print_success "SSL certificates installed"
 
 print_info "Step 17: Creating admin user..."
 mysql -u whatsflow -p"SHTech2152!" whatsflow -e "
-INSERT IGNORE INTO admin_users (id, email, password, role, created_at) VALUES (
+INSERT INTO admin_users (id, email, password_hash, full_name, role, created_at) 
+VALUES (
   UUID(), 
   '$ADMIN_EMAIL', 
-  '$ADMIN_PASSWORD_HASH', 
+  '$ADMIN_PASSWORD_HASH',
+  'System Administrator', 
   'super_admin', 
   NOW()
-);
+)
+ON DUPLICATE KEY UPDATE email = email;
 "
 print_success "Admin user created"
 
