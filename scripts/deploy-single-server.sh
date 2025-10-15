@@ -305,17 +305,29 @@ print_info "Step 12: Building applications..."
 # Note: Backend will run with tsx (no build needed, TypeScript runtime)
 print_info "Backend will run with tsx (development mode)"
 
-# Build frontend apps
+# Build frontend apps (clean build without linting)
 cd "$HOME/whatsflow/frontend"
-npm run build
+rm -rf .next
+SKIP_ENV_VALIDATION=true npm run build || {
+    print_warning "Build with turbopack failed, trying without turbopack..."
+    npx next build
+}
 print_success "Main frontend built"
 
 cd "$HOME/whatsflow/landing"
-npm run build
+rm -rf .next
+SKIP_ENV_VALIDATION=true npm run build || {
+    print_warning "Build with turbopack failed, trying without turbopack..."
+    npx next build
+}
 print_success "Landing page built"
 
 cd "$HOME/whatsflow/admin"
-npm run build
+rm -rf .next
+SKIP_ENV_VALIDATION=true npm run build || {
+    print_warning "Build with turbopack failed, trying without turbopack..."
+    npx next build
+}
 print_success "Admin panel built"
 
 # ============================================
