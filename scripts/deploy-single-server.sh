@@ -302,10 +302,8 @@ print_success "Frontend applications configured"
 
 print_info "Step 12: Building applications..."
 
-# Build backend
-cd "$HOME/whatsflow/whatsflow/backend"
-npm run build
-print_success "Backend built"
+# Note: Backend will run with tsx (no build needed, TypeScript runtime)
+print_info "Backend will run with tsx (development mode)"
 
 # Build frontend apps
 cd "$HOME/whatsflow/frontend"
@@ -326,9 +324,9 @@ print_success "Admin panel built"
 
 print_info "Step 13: Starting applications with PM2..."
 
-# Start backend
+# Start backend with tsx (development mode)
 cd "$HOME/whatsflow/whatsflow/backend"
-pm2 start dist/app.js --name whatsflow-api
+pm2 start npm --name whatsflow-api -- run dev
 
 # Start frontend apps
 cd "$HOME/whatsflow/frontend"
