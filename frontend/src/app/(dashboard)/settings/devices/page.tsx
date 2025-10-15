@@ -355,6 +355,7 @@ function AddDeviceModal({
     phone_number: '',
     persona_id: personas.find((p) => p.name === 'General')?.id || '',
     auto_reply_enabled: false,
+    ai_schedule: [] as any[],
     working_hours_start: '09:00',
     working_hours_end: '17:00',
     working_days: 'Mon,Tue,Wed,Thu,Fri',
