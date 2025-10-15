@@ -545,7 +545,17 @@ function EditDeviceModal({
   onClose: () => void;
   onSuccess: () => void;
 }) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    device_name: string;
+    persona_id: string;
+    auto_reply_enabled: boolean;
+    ai_enabled: boolean;
+    ai_schedule: any[];
+    working_hours_start: string;
+    working_hours_end: string;
+    working_days: string;
+    is_primary: boolean;
+  }>({
     device_name: device.device_name,
     persona_id: device.persona_id || '',
     auto_reply_enabled: device.auto_reply_enabled,

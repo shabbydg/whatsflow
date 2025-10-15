@@ -17,3 +17,5 @@ echo "📧 Email: accounts@digitalarc.lk"
 echo "🤖 Google Gemini API Key: ${GOOGLE_API_KEY:0:10}..."
 echo "🤖 Anthropic Claude API Key: ${ANTHROPIC_API_KEY:0:10}..."
 echo ""
+
+
