@@ -187,25 +187,24 @@ fi
 print_info "Step 9: Setting up database..."
 cd "$HOME/whatsflow"
 
+# Drop existing database if it exists (fresh install)
+print_info "Dropping existing database if it exists..."
+mysql -u root -p"SHTech2152!" -e "DROP DATABASE IF EXISTS whatsflow;"
+
 # Create database and user
+print_info "Creating database and user..."
 mysql -u root -p"SHTech2152!" -e "
-CREATE DATABASE IF NOT EXISTS whatsflow CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE whatsflow CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS 'whatsflow'@'localhost' IDENTIFIED BY 'SHTech2152!';
 GRANT ALL PRIVILEGES ON whatsflow.* TO 'whatsflow'@'localhost';
 FLUSH PRIVILEGES;
 "
 
-# Run all migrations
-cd whatsflow/backend
-mysql -u whatsflow -p"SHTech2152!" whatsflow < scripts/setup-database.sql
-mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/create_billing_system.sql
-mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/create_admin_system.sql
-mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/seed_plans.sql
-mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/add_lead_generation.sql
-mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/add_lead_foreign_keys.sql
-mysql -u whatsflow -p"SHTech2152!" whatsflow < migrations/add_test_account_flag.sql
+# Import the complete database backup
+print_info "Importing database backup..."
+mysql -u whatsflow -p"SHTech2152!" whatsflow < scripts/whatsflow_db_backup.sql
 
-print_success "Database created and migrations run"
+print_success "Database created and backup imported successfully"
 
 # ============================================
 # STEP 10: BACKEND CONFIGURATION
