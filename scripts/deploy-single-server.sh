@@ -93,6 +93,9 @@ print_info "Step 3: Installing and configuring MySQL..."
 if ! command -v mysql &> /dev/null; then
     sudo apt install -y mysql-server
     
+    # Wait for MySQL to fully start
+    sleep 5
+    
     # Secure MySQL installation automatically
     sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'SHTech2152!';"
     sudo mysql -e "DELETE FROM mysql.user WHERE User='';"
@@ -101,9 +104,16 @@ if ! command -v mysql &> /dev/null; then
     sudo mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
     sudo mysql -e "FLUSH PRIVILEGES;"
     
+    # Restart MySQL to ensure password change takes effect
+    sudo systemctl restart mysql
+    sleep 3
+    
     print_success "MySQL installed and secured"
 else
     print_warning "MySQL already installed"
+    # If MySQL was already installed, ensure root password is set
+    sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'SHTech2152!';" 2>/dev/null || true
+    sudo mysql -e "FLUSH PRIVILEGES;" 2>/dev/null || true
 fi
 
 # ============================================
