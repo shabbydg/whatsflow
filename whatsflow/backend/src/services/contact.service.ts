@@ -5,6 +5,8 @@ export class ContactService {
   async getContacts(businessProfileId: string, page: number = 1, limit: number = 50) {
     const offset = (page - 1) * limit;
 
+    // MySQL doesn't support prepared statement parameters for LIMIT and OFFSET
+    // So we need to interpolate them directly into the SQL string
     const contacts: any = await query(
       `SELECT c.*,
               (SELECT COUNT(*) FROM contact_tags ct WHERE ct.contact_id = c.id) as tag_count,
@@ -13,8 +15,8 @@ export class ContactService {
        LEFT JOIN whatsapp_connections wc ON c.last_device_id = wc.id
        WHERE c.business_profile_id = ?
        ORDER BY c.last_message_at DESC
-       LIMIT ? OFFSET ?`,
-      [businessProfileId, limit, offset]
+       LIMIT ${parseInt(limit.toString())} OFFSET ${parseInt(offset.toString())}`,
+      [businessProfileId]
     );
 
     const totalResult: any = await query(

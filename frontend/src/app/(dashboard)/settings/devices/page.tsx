@@ -51,6 +51,7 @@ export default function DevicesPage() {
         devicesAPI.getAll(),
         personasAPI.getAll(),
       ]);
+      console.log('Devices loaded:', devicesRes.data.data); // Debug log
       setDevices(devicesRes.data.data);
       setPersonas(personasRes.data.data);
     } catch (error) {
@@ -185,6 +186,7 @@ export default function DevicesPage() {
                       <div className="flex items-center space-x-2">
                         <span className="font-medium">Status:</span>
                         <span className="flex items-center space-x-1">
+                          {(() => { console.log('Device status:', device.status); return null; })()}
                           {device.status === 'connected' ? (
                             <>
                               <CheckCircle className="w-4 h-4 text-green-500" />
@@ -261,6 +263,7 @@ export default function DevicesPage() {
                     )}
 
                     {/* Show reconnect button for disconnected devices */}
+                    {(() => { console.log('Checking reconnect button for device:', device.device_name, 'status:', device.status, 'should show:', device.status === 'disconnected'); return null; })()}
                     {device.status === 'disconnected' && (
                       <div className="mt-4">
                         <button

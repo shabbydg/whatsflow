@@ -23,8 +23,9 @@ export class MessageService {
       params.push(contactId);
     }
 
-    sql += ' ORDER BY m.created_at DESC LIMIT ? OFFSET ?';
-    params.push(limit, offset);
+    // MySQL doesn't support prepared statement parameters for LIMIT and OFFSET
+    // So we need to interpolate them directly into the SQL string
+    sql += ` ORDER BY m.created_at DESC LIMIT ${parseInt(limit.toString())} OFFSET ${parseInt(offset.toString())}`;
 
     const messages: any = await query(sql, params);
 
@@ -51,14 +52,16 @@ export class MessageService {
   }
 
   async getConversation(businessProfileId: string, contactId: string, limit: number = 100) {
+    // MySQL doesn't support prepared statement parameters for LIMIT
+    // So we need to interpolate it directly into the SQL string
     const messages: any = await query(
       `SELECT m.*, wc.device_name
        FROM messages m
        LEFT JOIN whatsapp_connections wc ON m.device_id = wc.id
        WHERE m.business_profile_id = ? AND m.contact_id = ?
        ORDER BY m.created_at DESC
-       LIMIT ?`,
-      [businessProfileId, contactId, limit]
+       LIMIT ${parseInt(limit.toString())}`,
+      [businessProfileId, contactId]
     );
 
     return Array.isArray(messages) ? messages.reverse() : [];

@@ -35,6 +35,7 @@ export default function MessagesPage() {
     messagesEndRef.current?.scrollIntoView({ behavior });
   };
 
+  // Socket connection effect - only runs when user changes
   useEffect(() => {
     loadDevices();
     loadContacts();
@@ -50,23 +51,44 @@ export default function MessagesPage() {
       socket.emit('join-business', user.businessProfileId);
       console.log('Joined Socket.IO room:', `business-${user.businessProfileId}`);
 
-      // Listen for new messages
-      socket.on('new-message', (message: Message) => {
-        console.log('Received new-message event:', message);
-        // If message is for currently selected contact, add it to the list
-        if (selectedContact && message.contact_id === selectedContact.id) {
-          setMessages((prev) => [...prev, message]);
-        }
-        // Reload contacts to update last message time
-        loadContacts();
-      });
-
       return () => {
-        socket.off('new-message');
         socket.disconnect();
       };
     }
-  }, [user, selectedContact]);
+  }, [user]);
+
+  // Message handling effect - separate from socket connection
+  useEffect(() => {
+    if (user?.businessProfileId) {
+      const handleNewMessage = (message: Message) => {
+        console.log('Received new-message event:', message);
+        console.log('Current selectedContact:', selectedContact);
+        console.log('Message contact_id:', message.contact_id);
+        console.log('Should update messages:', selectedContact && message.contact_id === selectedContact.id);
+        
+        // If message is for currently selected contact, add it to the list
+        if (selectedContact && message.contact_id === selectedContact.id) {
+          console.log('Adding message to current conversation');
+          setMessages((prev) => {
+            console.log('Previous messages count:', prev.length);
+            const newMessages = [...prev, message];
+            console.log('New messages count:', newMessages.length);
+            return newMessages;
+          });
+        } else {
+          console.log('Message not for current contact, only updating contacts list');
+        }
+        // Reload contacts to update last message time
+        loadContacts();
+      };
+
+      socket.on('new-message', handleNewMessage);
+
+      return () => {
+        socket.off('new-message', handleNewMessage);
+      };
+    }
+  }, [user?.businessProfileId, selectedContact]);
 
   useEffect(() => {
     if (selectedContact) {
