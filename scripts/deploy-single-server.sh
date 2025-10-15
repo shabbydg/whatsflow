@@ -255,15 +255,15 @@ PAYHERE_MERCHANT_SECRET=your_secret
 PAYHERE_APP_ID=your_app_id
 PAYHERE_APP_SECRET=your_app_secret
 PAYHERE_MODE=live
-PAYHERE_RETURN_URL=https://app.$DOMAIN/billing/success
-PAYHERE_CANCEL_URL=https://app.$DOMAIN/billing/cancel
-PAYHERE_NOTIFY_URL=https://api.$DOMAIN/api/v1/billing/webhook
+PAYHERE_RETURN_URL=https://wfapp.digitalarc.lk/billing/success
+PAYHERE_CANCEL_URL=https://wfapp.digitalarc.lk/billing/cancel
+PAYHERE_NOTIFY_URL=https://wfapi.digitalarc.lk/api/v1/billing/webhook
 
 # Frontend URL
-FRONTEND_URL=https://app.$DOMAIN
+FRONTEND_URL=https://wfapp.digitalarc.lk
 
 # CORS
-CORS_ORIGIN=https://app.$DOMAIN,https://admin.$DOMAIN
+CORS_ORIGIN=https://wfapp.digitalarc.lk,https://wfadmin.digitalarc.lk
 
 # Email Configuration
 SMTP_HOST=smtp.gmail.com
@@ -289,8 +289,8 @@ print_info "Step 11: Configuring frontend applications..."
 cd "$HOME/whatsflow/frontend"
 npm install
 cat > .env.local << EOF
-NEXT_PUBLIC_API_URL=https://api.$DOMAIN
-NEXT_PUBLIC_SOCKET_URL=https://api.$DOMAIN
+NEXT_PUBLIC_API_URL=https://wfapi.digitalarc.lk
+NEXT_PUBLIC_SOCKET_URL=https://wfapi.digitalarc.lk
 EOF
 
 # Landing Page
@@ -301,7 +301,7 @@ npm install
 cd "$HOME/whatsflow/admin"
 npm install
 cat > .env.local << EOF
-NEXT_PUBLIC_API_URL=https://api.$DOMAIN
+NEXT_PUBLIC_API_URL=https://wfapi.digitalarc.lk
 EOF
 
 print_success "Frontend applications configured"
@@ -379,7 +379,7 @@ sudo tee /etc/nginx/sites-available/whatsflow > /dev/null << EOF
 # Backend API
 server {
     listen 80;
-    server_name api.$DOMAIN;
+    server_name wfapi.digitalarc.lk;
 
     location / {
         proxy_pass http://localhost:2152;
@@ -400,7 +400,7 @@ server {
 # Main Application
 server {
     listen 80;
-    server_name app.$DOMAIN;
+    server_name wfapp.digitalarc.lk;
 
     location / {
         proxy_pass http://localhost:2153;
@@ -436,7 +436,7 @@ server {
 # Admin Panel
 server {
     listen 80;
-    server_name admin.$DOMAIN;
+    server_name wfadmin.digitalarc.lk;
 
     location / {
         proxy_pass http://localhost:5153;
@@ -478,7 +478,7 @@ print_success "Firewall configured"
 # ============================================
 
 print_info "Step 16: Setting up SSL certificates..."
-sudo certbot --nginx -d $DOMAIN -d app.$DOMAIN -d admin.$DOMAIN -d api.$DOMAIN --non-interactive --agree-tos --email $EMAIL_USER --redirect
+sudo certbot --nginx -d $DOMAIN -d wfapp.digitalarc.lk -d wfadmin.digitalarc.lk -d wfapi.digitalarc.lk --non-interactive --agree-tos --email $EMAIL_USER --redirect
 print_success "SSL certificates installed"
 
 # ============================================
@@ -520,9 +520,9 @@ sudo systemctl is-active nginx mysql redis-server
 echo ""
 echo "🌐 Testing URLs:"
 curl -I https://$DOMAIN > /dev/null 2>&1 && print_success "Landing page accessible" || print_error "Landing page not accessible"
-curl -I https://app.$DOMAIN > /dev/null 2>&1 && print_success "Main app accessible" || print_error "Main app not accessible"
-curl -I https://admin.$DOMAIN > /dev/null 2>&1 && print_success "Admin panel accessible" || print_error "Admin panel not accessible"
-curl -s https://api.$DOMAIN/health > /dev/null 2>&1 && print_success "API accessible" || print_error "API not accessible"
+curl -I https://wfapp.digitalarc.lk > /dev/null 2>&1 && print_success "Main app accessible" || print_error "Main app not accessible"
+curl -I https://wfadmin.digitalarc.lk > /dev/null 2>&1 && print_success "Admin panel accessible" || print_error "Admin panel not accessible"
+curl -s https://wfapi.digitalarc.lk/health > /dev/null 2>&1 && print_success "API accessible" || print_error "API not accessible"
 
 # ============================================
 # DEPLOYMENT COMPLETE
@@ -536,9 +536,9 @@ echo "✅ WhatsFlow is now running on your server!"
 echo ""
 echo "🌐 Your URLs:"
 echo "   Landing:    https://$DOMAIN"
-echo "   Main App:   https://app.$DOMAIN"
-echo "   Admin:      https://admin.$DOMAIN"
-echo "   API:        https://api.$DOMAIN"
+echo "   Main App:   https://wfapp.digitalarc.lk"
+echo "   Admin:      https://wfadmin.digitalarc.lk"
+echo "   API:        https://wfapi.digitalarc.lk"
 echo ""
 echo "👤 Admin Login:"
 echo "   Email:    $ADMIN_EMAIL"
