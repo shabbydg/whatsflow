@@ -556,6 +556,7 @@ function EditDeviceModal({
     working_hours_end: string;
     working_days: string;
     is_primary: boolean;
+    email_on_disconnect: boolean;
   }>({
     device_name: device.device_name,
     persona_id: device.persona_id || '',
@@ -576,6 +577,7 @@ function EditDeviceModal({
     working_hours_end: device.working_hours_end || '17:00',
     working_days: device.working_days || 'Mon,Tue,Wed,Thu,Fri',
     is_primary: device.is_primary,
+    email_on_disconnect: device.email_on_disconnect || false,
   });
   const [submitting, setSubmitting] = useState(false);
 
